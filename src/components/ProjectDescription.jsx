@@ -2,7 +2,7 @@ import React from "react";
 
 const ProjectDescription = () => {
   return (
-    <div className="flex gap-6   py-16 px-16 h-screen dark:bg-black bg-white">
+    <div className="flex gap-6 py-16 px-16 h-max dark:bg-black bg-white">
       <div className="w-8/12">
         <div className="flex items-center justify-between">
           <div>

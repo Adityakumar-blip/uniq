@@ -1,7 +1,35 @@
 import InputWithLable from "@/components/InputWithLable";
+import { useFormik } from "formik";
 import React from "react";
+import { addProject } from "../../../utils/projectfire";
+import { useDispatch } from "react-redux";
+import { AddProject } from "@/Store/Reducers/ProjectSlice";
+
+const initialValues = {
+  name: "",
+  description: "",
+  shortIntro: "",
+  img: "",
+  techstack: [],
+  tags: [],
+};
 
 const index = () => {
+  const dispatch = useDispatch();
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    enableReinitialize: true,
+    onSubmit: (values) => {
+      try {
+        dispatch(AddProject(values));
+      } catch (error) {
+        console.log("Error in adding project", error);
+      }
+    },
+  });
+
+  console.log("Formik values", formik.values);
   return (
     <div className="p-10">
       <div>
@@ -19,7 +47,11 @@ const index = () => {
                   Project Name
                 </span>
               </div>
-              <InputWithLable />
+              <InputWithLable
+                name="name"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+              />
             </div>
             <div>
               <div className="label">
@@ -27,7 +59,11 @@ const index = () => {
                   Technologies Requirement
                 </span>
               </div>
-              <InputWithLable />
+              <InputWithLable
+                name="techStack"
+                value={formik.values.techstack}
+                onChange={formik.handleChange}
+              />
             </div>
           </div>
           <div class="grid gap-4 md:grid-cols-2">
@@ -37,7 +73,11 @@ const index = () => {
                   Project Tags
                 </span>
               </div>
-              <InputWithLable />
+              <InputWithLable
+                name="tags"
+                value={formik.values.tags}
+                onChange={formik.handleChange}
+              />
             </div>
             <div>
               <div className="label">
@@ -45,7 +85,11 @@ const index = () => {
                   Short Description
                 </span>
               </div>
-              <InputWithLable />
+              <InputWithLable
+                name="shortIntro"
+                value={formik.values.shortIntro}
+                onChange={formik.handleChange}
+              />
             </div>
           </div>
           <div class="grid gap-4 md:grid-cols-2">
@@ -58,6 +102,9 @@ const index = () => {
               <textarea
                 id="message"
                 rows="4"
+                name="description"
+                value={formik.values.description}
+                onChange={formik.handleChange}
                 class="block p-2.5 w-full ring-blue-500 text-sm text-gray-900 bg-gray-50 rounded-lg border border-blue-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Write your thoughts here..."
               ></textarea>
@@ -70,6 +117,7 @@ const index = () => {
               </div>
               <textarea
                 id="message"
+                name=""
                 rows="4"
                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500  dark:focus:border-blue-500"
                 placeholder="Write your thoughts here..."
@@ -77,7 +125,10 @@ const index = () => {
             </div>
           </div>
 
-          <div className="mt-6 flex gap-[1px] cursor-pointer">
+          <div
+            className="mt-6 flex gap-[1px] cursor-pointer"
+            onClick={formik.handleSubmit}
+          >
             <div className="bg-blue-500 w-[8rem] h-[3rem] flex items-center justify-center">
               <p className="font-semibold">Add Project</p>
             </div>

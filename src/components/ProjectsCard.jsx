@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import React from "react";
 
 const ProjectsCard = ({ props }) => {
-  console.log(props);
   const router = useRouter();
   return (
     <div>
@@ -11,14 +10,18 @@ const ProjectsCard = ({ props }) => {
         onClick={() => router.push("/project-description")}
       >
         <figure>
-          <img src={props?.imageSrc} alt="Shoes" className="w-full" />
+          <img
+            src="https://via.placeholder.com/500"
+            alt="Shoes"
+            className="w-full"
+          />
         </figure>
         <div className="card-body">
           <h2 className="card-title">
-            {props.title}
+            {props.name}
             <div className="badge badge-secondary">NEW</div>
           </h2>
-          <p>{props.description}</p>
+          <p>{props.shortIntro || ""}</p>
           <div className="card-actions justify-end">
             <div className="badge badge-outline">Fashion</div>
             <div className="badge badge-outline">Products</div>

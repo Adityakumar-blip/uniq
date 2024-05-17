@@ -5,7 +5,7 @@ const index = () => {
     <div className="text-black text-4xl bg-black h-screen p-12 flex">
       <div className="bg-[#0d1b2a] w-full rounded-xl flex flex-col md:flex-row">
         <div className="w-full md:w-1/2 p-4">
-          <div className="p-16">
+          <div className="p-8 md:p-10 lg:p-10">
             <p className="font-semibold text-white">Get Started Now</p>
             <p className="text-sm text-gray-500">
               Create account to start your experience.
@@ -29,7 +29,7 @@ const index = () => {
               </svg>
               Sign in with Google
             </button>
-            <div className="mt-10">
+            <div className="">
               <form className="">
                 <div className="mb-5">
                   <label

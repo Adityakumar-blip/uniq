@@ -1,8 +1,12 @@
 import { useRouter } from "next/router";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const router = useRouter();
+
+  const { token } = useSelector(({ CommonSlice }) => CommonSlice);
+  console.log("Token", token);
   return (
     <div>
       <nav class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
@@ -142,27 +146,62 @@ const Navbar = () => {
                   Contact
                 </a>
               </li>
-              <li>
-                <button
-                  className="btn btn-primary text-white"
-                  onClick={() => router.push("/add-project")}
-                >
-                  Submit Project
-                </button>
-              </li>
-              <li>
-                <div className="flex items-center gap-2  font-semibold">
-                  <img
-                    class="w-12 h-12 border-2 border-white rounded-full dark:border-gray-800"
-                    src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aGVhZHNob3R8ZW58MHx8MHx8fDA%3D"
-                    alt=""
-                  />
-                  {/* <div>
+              {token ? (
+                <>
+                  <li>
+                    <button
+                      className="btn btn-primary text-white"
+                      onClick={() => router.push("/add-project")}
+                    >
+                      Submit Project
+                    </button>
+                  </li>
+                  <li>
+                    <div className="dropdown dropdown-hover dropdown-left">
+                      <div
+                        tabIndex={0}
+                        role="button"
+                        className="flex items-center gap-2 m-1  font-semibold"
+                      >
+                        <img
+                          class="w-12 h-12 border-2 border-white rounded-full dark:border-gray-800"
+                          src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aGVhZHNob3R8ZW58MHx8MHx8fDA%3D"
+                          alt=""
+                        />
+                        {/* <div>
                     <p className="text-xl">Aditya Kumar</p>
                     <p className="text-sm text-gray-500">Software Developer</p>
                   </div> */}
-                </div>
-              </li>
+                      </div>
+                      <ul
+                        tabIndex={0}
+                        className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+                      >
+                        <li>
+                          <a>Item 1</a>
+                        </li>
+                        <li>
+                          <a>Item 2</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li
+                    className="cursor-pointer"
+                    onClick={() => router.push("/auth/login")}
+                  >
+                    <p>Login</p>
+                  </li>
+                  <li>
+                    <button className="btn btn-primary rounded-full w-[100px] text-white">
+                      Sign up
+                    </button>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>

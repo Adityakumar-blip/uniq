@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import React from "react";
+import { imgUrl } from "../../utils/HTTP";
 
 const ProjectsCard = ({ props }) => {
   const router = useRouter();
@@ -11,7 +12,11 @@ const ProjectsCard = ({ props }) => {
       >
         <figure>
           <img
-            src="https://via.placeholder.com/500"
+            src={
+              props.img
+                ? `${imgUrl}${props.img}`
+                : "https://via.placeholder.com/500"
+            }
             alt="Shoes"
             className="w-full"
           />

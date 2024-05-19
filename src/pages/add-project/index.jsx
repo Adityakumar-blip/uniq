@@ -1,6 +1,6 @@
 import InputWithLable from "@/components/InputWithLable";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { addProject } from "../../../utils/projectfire";
 import { useDispatch } from "react-redux";
 import { AddProject } from "@/Store/Reducers/ProjectSlice";
@@ -17,12 +17,34 @@ const initialValues = {
 const index = () => {
   const dispatch = useDispatch();
 
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result);
+        formik.setFieldValue("img", file);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveImg = () => {
+    setSelectedImage(null);
+  };
+
   const formik = useFormik({
     initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {
+      const formData = new FormData();
+      for (const key in values) {
+        formData.append(key, values[key]);
+      }
       try {
-        dispatch(AddProject(values));
+        dispatch(AddProject(formData));
       } catch (error) {
         console.log("Error in adding project", error);
       }
@@ -39,8 +61,40 @@ const index = () => {
         </p>
       </div>
       <div className="mt-6">
+        <div className="flex items-center gap-[50px]">
+          <img
+            src={
+              selectedImage ||
+              "https://cdn.dribbble.com/userupload/14600121/file/original-f8dbf2e94ec02b742de211d1bde58544.jpg?resize=752x564"
+            }
+            alt="Selected"
+            className="h-[160px] w-[200px] object-cover rounded-lg"
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="hidden"
+            id="imageUpload"
+          />
+          {!selectedImage ? (
+            <label
+              htmlFor="imageUpload"
+              className="btn w-[10rem] text-white cursor-pointer"
+            >
+              Upload
+            </label>
+          ) : (
+            <button
+              className="btn w-[10rem] text-white cursor-pointer"
+              onClick={() => handleRemoveImg()}
+            >
+              Remove
+            </button>
+          )}
+        </div>
         <form>
-          <div class="grid gap-4 md:grid-cols-2">
+          <div class="grid gap-4 mt-4 md:grid-cols-2">
             <div>
               <div className="label">
                 <span className=" text-black text-lg font-semibold">

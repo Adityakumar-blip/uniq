@@ -1,5 +1,5 @@
 import { setToken } from "@/Store/Reducers/CommonSlice";
-import { SignIn } from "@/store/Reducers/AuthSlice";
+import { SignUp } from "@/store/Reducers/AuthSlice";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
@@ -7,22 +7,28 @@ import { useDispatch } from "react-redux";
 
 const index = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       email: "",
+      fullName: "",
       password: "",
+      isAgreed: false,
     },
     onSubmit: (values) => {
-      dispatch(SignIn(values)).then((response) => {
+      dispatch(SignUp(values)).then((response) => {
+        console.log("signup response", response);
         if (response.payload.status === 200) {
-          dispatch(setToken(response.payload.data.token));
-          localStorage.setItem(
-            "user",
-            JSON.stringify(response.payload.data.data)
-          );
-          router.push("/projects");
+          dispatch(setToken(response.payload.data.data.token));
+          // localStorage.setItem(
+          //   "user",
+          //   JSON.stringify(response.payload.data.data)
+          // );
+          router.push({
+            pathname: "/prefferances",
+            query: { id: response.payload.data.data._id },
+          });
         }
       });
     },
@@ -56,8 +62,27 @@ const index = () => {
             </svg>
             Sign in with Google
           </button>
+          <div className="divider divider-primary text-black">OR</div>
           <div className="">
             <form className="" onSubmit={formik.handleSubmit}>
+              <div className="mb-5">
+                <label
+                  htmlFor="fullName"
+                  className="block mb-2 text-sm font-medium  text-black"
+                >
+                  Your Name
+                </label>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Aditya Kumar"
+                  required
+                  value={formik.values.fullName}
+                  onChange={formik.handleChange}
+                />
+              </div>
               <div className="mb-5">
                 <label
                   htmlFor="email"
@@ -71,8 +96,8 @@ const index = () => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@uniqq.com"
                   required
-                  onChange={formik.handleChange}
                   value={formik.values.email}
+                  onChange={formik.handleChange}
                 />
               </div>
               <div className="mb-5">
@@ -85,52 +110,51 @@ const index = () => {
                 <input
                   type="password"
                   id="password"
-                  name="password"
-                  onChange={formik.handleChange}
-                  value={formik.values.password}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
                   placeholder="Enter your password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
                 />
               </div>
-              {/* <div className="flex items-start mb-5">
+              <div className="flex items-start mb-5">
                 <div className="flex items-center h-5">
                   <input
                     id="remember"
                     type="checkbox"
                     value=""
+                    className="w-4 h-4 border border-gray-300 rounded bg-white-50 focus:ring-3 focus:ring-blue-300 dark:bg-white-700 dark:border-white-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
+                    required
                     checked={formik.values.isAgreed}
                     onChange={(e) =>
                       formik.setFieldValue("isAgreed", e.target.checked)
                     }
-                    className="w-4 h-4 border border-gray-300 rounded bg-white-50 focus:ring-3 focus:ring-blue-300 dark:bg-white-700 dark:border-white-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-                    required
                   />
                 </div>
                 <label
                   htmlFor="remember"
                   className="ms-2 text-sm font-medium text-gray-900 dark:text-black-300"
                 >
-                  I Agree to uniqq terms and conditons & privacy policies
+                  Remember me
                 </label>
-              </div> */}
+              </div>
               <button
                 type="submit"
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
-                Sign in
+                Sign up
               </button>
             </form>
             <p
               id="helper-text-explanation"
               className="mt-6 text-sm text-gray-500 dark:text-gray-400"
             >
-              New on uniqq?
+              Already have an account?
               <a
-                href="/auth/signup"
+                href="/auth/login"
                 className="font-medium ml-2 text-blue-600 hover:underline dark:text-blue-500"
               >
-                Sign up
+                Sign in
               </a>
               .
             </p>
@@ -139,7 +163,7 @@ const index = () => {
       </div>
       <div className="hidden md:block w-1/2 p-4">
         <img
-          src="https://img.freepik.com/free-vector/realistic-3d-shapes-floating-background_23-2148902504.jpg?size=626&ext=jpg"
+          src="https://cdn.dribbble.com/users/9693173/screenshots/17196561/media/10da62ed1e94174b5a5c61329f24bb18.jpeg?resize=400x300&vertical=center"
           alt="Background Image"
           className="h-full w-full rounded-xl object-cover"
         />

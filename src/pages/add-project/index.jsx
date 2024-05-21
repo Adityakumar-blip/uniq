@@ -183,7 +183,7 @@ const index = () => {
             className="mt-6 flex gap-[1px] cursor-pointer"
             onClick={formik.handleSubmit}
           >
-            <div className="bg-blue-500 w-[8rem] h-[3rem] flex items-center justify-center">
+            <div className="bg-blue-500  w-[8rem] h-[3rem] flex items-center justify-center">
               <p className="font-semibold">Add Project</p>
             </div>
             <div className="bg-blue-500 w-[3rem] h-[3rem] flex items-center justify-center">

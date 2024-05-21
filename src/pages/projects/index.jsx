@@ -25,7 +25,9 @@ const Index = () => {
         Discover and contribute to the best projects from engineers across the
         globe
       </p>
-      <SeaarchInput />
+      <div className="w-[50%]">
+        <SeaarchInput />
+      </div>
       <div className="mt-6 pb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {projects.map((item, index) => (
           <ProjectsCard key={index} props={item} />

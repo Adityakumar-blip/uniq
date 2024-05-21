@@ -6,7 +6,7 @@ const Navbar = () => {
   const router = useRouter();
 
   const { token } = useSelector(({ CommonSlice }) => CommonSlice);
-  console.log("Token", token);
+  console.log("path", router.asPath);
   return (
     <div>
       <nav class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
@@ -50,7 +50,7 @@ const Navbar = () => {
               <li>
                 <a
                   href="/"
-                  class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
+                  class="block py-2 px-3 text-white md:dark:bg-transparent"
                   aria-current="page"
                 >
                   Home
@@ -157,7 +157,7 @@ const Navbar = () => {
                     </button>
                   </li>
                   <li>
-                    <div className="dropdown dropdown-hover dropdown-left">
+                    <div className="dropdown dropdown-hover dropdown-end">
                       <div
                         tabIndex={0}
                         role="button"
@@ -168,14 +168,10 @@ const Navbar = () => {
                           src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aGVhZHNob3R8ZW58MHx8MHx8fDA%3D"
                           alt=""
                         />
-                        {/* <div>
-                    <p className="text-xl">Aditya Kumar</p>
-                    <p className="text-sm text-gray-500">Software Developer</p>
-                  </div> */}
                       </div>
                       <ul
                         tabIndex={0}
-                        className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+                        className="dropdown-content z-[1] menu mt-4 p-2 shadow bg-base-100 rounded-box w-52"
                       >
                         <li>
                           <a>Item 1</a>

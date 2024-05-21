@@ -3,7 +3,7 @@ import React from "react";
 const SeaarchInput = () => {
   return (
     <div>
-      <form class="w-[5 0%] mt-8">
+      <form class="w-[5 0%] mt-8 rounded-full">
         <label
           for="default-search"
           class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -31,7 +31,8 @@ const SeaarchInput = () => {
           <input
             type="search"
             id="default-search"
-            class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="block w-full  p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50  dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 font-semibold leading-3  
+            "
             placeholder="Search all projects"
             required
           />

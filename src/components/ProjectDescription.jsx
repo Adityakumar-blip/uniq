@@ -1,6 +1,8 @@
+import { useRouter } from "next/router";
 import React from "react";
 
 const ProjectDescription = () => {
+  const router = useRouter();
   return (
     <div className="flex gap-6 py-16 px-16 h-max dark:bg-black bg-white">
       <div className="w-8/12">
@@ -9,7 +11,10 @@ const ProjectDescription = () => {
             <p className="text-4xl font-bold">Sample Project Title</p>
             <p className="mt-2 text-gray-400">Launched on July 1 2029</p>
           </div>
-          <button className="btn btn-primary text-white mr-6">
+          <button
+            className="btn btn-primary text-white mr-6"
+            onClick={() => router.push("/project-description/contribution")}
+          >
             Start Contribute
           </button>
         </div>

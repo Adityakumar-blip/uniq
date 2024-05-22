@@ -1,12 +1,22 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { imgUrl } from "../../utils/HTTP";
 
 const Navbar = () => {
   const router = useRouter();
+  const [userInfo, setUserInfo] = useState(null);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const user = localStorage.getItem("user");
+      if (user) {
+        setUserInfo(JSON.parse(user));
+      }
+    }
+  }, []);
   const { token } = useSelector(({ CommonSlice }) => CommonSlice);
-  console.log("path", router.asPath);
+  console.log("path", userInfo);
   return (
     <div>
       <nav class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
@@ -162,10 +172,11 @@ const Navbar = () => {
                         tabIndex={0}
                         role="button"
                         className="flex items-center gap-2 m-1  font-semibold"
+                        onClick={() => router.push("/user/profile")}
                       >
                         <img
                           class="w-12 h-12 border-2 border-white rounded-full dark:border-gray-800"
-                          src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aGVhZHNob3R8ZW58MHx8MHx8fDA%3D"
+                          src={`${imgUrl}${userInfo?.img}`}
                           alt=""
                         />
                       </div>

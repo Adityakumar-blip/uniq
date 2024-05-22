@@ -1,18 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { imgUrl } from "../../../utils/HTTP";
 
 const profile = () => {
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const user = localStorage.getItem("user");
+      if (user) {
+        setUserInfo(JSON.parse(user));
+      }
+    }
+  }, []);
   return (
     <div className=" ">
       <div className="p-6">
         <p className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold text-black">
-          Aditya Kumar.
+          {userInfo?.fullName}
         </p>
       </div>
       <div className="divider divider-primary" />
       <div className="grid grid-cols-1 md:grid-cols-2 items-center p-6 gap-6">
         <div id="div1" className="flex justify-center">
           <img
-            src="https://images.unsplash.com/photo-1574182245530-967d9b3831af?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDF8fGNoaWxsZWQlMjBwcm9maWxlfGVufDB8fDB8fHww"
+            src={`${imgUrl}${userInfo?.img}`}
             className="w-[300px] sm:w-[400px] h-[400px] sm:h-[500px] object-cover"
           />
         </div>
@@ -21,13 +32,7 @@ const profile = () => {
           className="w-full md:w-[70%] flex flex-col gap-6 md:gap-20"
         >
           <p className="text-base sm:text-lg text-black font-semibold">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Cursus
-            mattis molestie a iaculis at erat. Adipiscing commodo elit at
-            imperdiet dui accumsan sit. Diam vulputate ut pharetra sit amet
-            aliquam id diam maecenas. Feugiat scelerisque varius morbi enim nunc
-            faucibus. Mi bibendum neque egestas congue quisque egestas diam in
-            arcu.
+            {userInfo?.bio}
           </p>
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-10 w-full">

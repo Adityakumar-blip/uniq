@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { addProject } from "../../../utils/projectfire";
 import { useDispatch } from "react-redux";
 import { AddProject } from "@/Store/Reducers/ProjectSlice";
+import MultiSelectDropdown from "@/components/MultipleSelection";
 
 const initialValues = {
   name: "",
@@ -41,7 +42,11 @@ const index = () => {
     onSubmit: (values) => {
       const formData = new FormData();
       for (const key in values) {
-        formData.append(key, values[key]);
+        if (Array.isArray(values[key])) {
+          formData.append(key, JSON.stringify(values[key]));
+        } else {
+          formData.append(key, values[key]);
+        }
       }
       try {
         dispatch(AddProject(formData));
@@ -52,6 +57,12 @@ const index = () => {
   });
 
   console.log("Formik values", formik.values);
+
+  const options = [
+    { value: "option1", label: "Option 1" },
+    { value: "option2", label: "Option 2" },
+    { value: "option3", label: "Option 3" },
+  ];
   return (
     <div className="p-10">
       <div>
@@ -107,16 +118,15 @@ const index = () => {
                 onChange={formik.handleChange}
               />
             </div>
-            <div>
+            <div className="dropdown-select">
               <div className="label">
                 <span className=" text-black text-lg font-semibold">
                   Technologies Requirement
                 </span>
               </div>
-              <InputWithLable
-                name="techStack"
-                value={formik.values.techstack}
-                onChange={formik.handleChange}
+              <MultiSelectDropdown
+                options={options}
+                onChange={(data) => formik.setFieldValue("techstack", data)}
               />
             </div>
           </div>
@@ -127,10 +137,9 @@ const index = () => {
                   Project Tags
                 </span>
               </div>
-              <InputWithLable
-                name="tags"
-                value={formik.values.tags}
-                onChange={formik.handleChange}
+              <MultiSelectDropdown
+                options={options}
+                onChange={(data) => formik.setFieldValue("tags", data)}
               />
             </div>
             <div>
@@ -159,7 +168,7 @@ const index = () => {
                 name="description"
                 value={formik.values.description}
                 onChange={formik.handleChange}
-                class="block p-2.5 w-full ring-blue-500 text-sm text-gray-900 bg-gray-50 rounded-lg border border-blue-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="block p-2.5 w-full ring-blue-500 text-sm text-gray-900 bg-gray-50 rounded-lg border border-blue-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-[#3b82f6] dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Write your thoughts here..."
               ></textarea>
             </div>
@@ -173,7 +182,7 @@ const index = () => {
                 id="message"
                 name=""
                 rows="4"
-                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500  dark:focus:border-blue-500"
+                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-[#3b82f6] dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500  dark:focus:border-blue-500"
                 placeholder="Write your thoughts here..."
               ></textarea>
             </div>

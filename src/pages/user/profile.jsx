@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { imgUrl } from "../../../utils/HTTP";
+import TabComponent from "@/components/TabComponent";
 
 const profile = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -68,53 +69,7 @@ const profile = () => {
         </div>
       </div>
       <div className="w-screen p-6">
-        <div role="tablist" className="tabs w-full tabs-md">
-          <input
-            type="radio"
-            name="my_tabs_1"
-            role="tab"
-            className="tab"
-            aria-label="My Projects"
-          />
-          <div role="tabpanel" className="tab-content  text-black p-10">
-            <div className="flex items-center justify-center">
-              <p className="text-2xl font-semibold text-black">
-                All projects will shown here
-              </p>
-            </div>
-          </div>
-
-          <input
-            type="radio"
-            name="my_tabs_1"
-            role="tab"
-            className="tab"
-            aria-label="Conversations"
-            checked
-          />
-          <div role="tabpanel" className="tab-content p-10">
-            <div className="flex items-center justify-center">
-              <p className="text-2xl font-semibold text-black">
-                All Conversations will shown here
-              </p>
-            </div>
-          </div>
-
-          <input
-            type="radio"
-            name="my_tabs_1"
-            role="tab"
-            className="tab"
-            aria-label="Settings"
-          />
-          <div role="tabpanel" className="tab-content p-10">
-            <div className="flex items-center justify-center">
-              <p className="text-2xl font-semibold text-black">
-                All settings will shown here
-              </p>
-            </div>
-          </div>
-        </div>
+        <TabComponent />
       </div>
     </div>
   );

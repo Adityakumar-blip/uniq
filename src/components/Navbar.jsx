@@ -19,7 +19,7 @@ const Navbar = () => {
   console.log("path", userInfo);
   return (
     <div>
-      <nav class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+      <nav class="bg-white border-gray-200 ">
         <div class="w-full-xl px-10 flex flex-wrap items-center justify-between mx-auto p-4">
           <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
             {/* <img
@@ -27,8 +27,8 @@ const Navbar = () => {
               class="h-8"
               alt="Flowbite Logo"
             /> */}
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-              Uniqq
+            <span class="self-center text-2xl font-semibold font-mono text-black whitespace-nowrap ">
+              dlabss
             </span>
           </a>
           <button
@@ -56,11 +56,11 @@ const Navbar = () => {
             </svg>
           </button>
           <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
-            <ul class="flex items-center flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <ul class="flex items-center flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0  ">
               <li>
                 <a
                   href="/"
-                  class="block py-2 px-3 text-white md:dark:bg-transparent"
+                  class="block py-2 px-3 text-black "
                   aria-current="page"
                 >
                   Home
@@ -70,7 +70,7 @@ const Navbar = () => {
                 <button
                   id="dropdownNavbarLink"
                   data-dropdown-toggle="dropdownNavbar"
-                  class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                  class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto  md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
                 >
                   Dropdown{" "}
                   <svg
@@ -135,7 +135,7 @@ const Navbar = () => {
               <li>
                 <a
                   href="/projects"
-                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0  md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                 >
                   Projects
                 </a>
@@ -143,15 +143,15 @@ const Navbar = () => {
               <li>
                 <a
                   href="#"
-                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0  md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                 >
-                  Pricing
+                  Developers
                 </a>
               </li>
               <li>
                 <a
                   href="#"
-                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0  md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                 >
                   Contact
                 </a>
@@ -182,13 +182,13 @@ const Navbar = () => {
                       </div>
                       <ul
                         tabIndex={0}
-                        className="dropdown-content z-[1] menu mt-4 p-2 shadow bg-base-100 rounded-box w-52"
+                        className="dropdown-content z-[1] menu  p-2 shadow bg-base-100 rounded-box w-52"
                       >
                         <li>
-                          <a>Item 1</a>
+                          <a>Profile</a>
                         </li>
                         <li>
-                          <a>Item 2</a>
+                          <a>Logout</a>
                         </li>
                       </ul>
                     </div>

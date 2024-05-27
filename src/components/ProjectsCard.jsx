@@ -7,8 +7,13 @@ const ProjectsCard = ({ props }) => {
   return (
     <div>
       <div
-        className="card bg-base-100 cursor-pointer h-[525px] shadow-xl"
-        onClick={() => router.push("/project-description")}
+        className="card text-black  cursor-pointer h-[420px] shadow-xl"
+        onClick={() =>
+          router.push({
+            pathname: "/project-description",
+            query: { id: props._id },
+          })
+        }
       >
         <figure>
           <img

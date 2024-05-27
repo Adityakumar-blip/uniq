@@ -1,42 +1,72 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
+import CopyButton from "./Clipboard";
+import { useDispatch, useSelector } from "react-redux";
+import { GetProjectById } from "@/Store/Reducers/ProjectSlice";
+import { imgUrl } from "../../utils/HTTP";
 
 const ProjectDescription = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const { id } = router.query;
+
+  const { projectDetails } = useSelector(({ ProjectSlice }) => ProjectSlice);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(GetProjectById(id));
+    }
+  }, []);
+
+  console.log("projectDetails", projectDetails);
+
+  // const options = { day: "numeric", month: "long", year: "numeric" };
+  // const formattedDate = projectDetails?.createdAt.toLocaleDateString(
+  //   "en-US",
+  //   options
+  // );
   return (
     <div className="flex gap-6 py-16 px-16 h-max dark:bg-black bg-white">
       <div className="w-8/12">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-4xl font-bold">Sample Project Title</p>
+            <p className="text-4xl font-bold">{projectDetails?.name}</p>
             <p className="mt-2 text-gray-400">Launched on July 1 2029</p>
           </div>
-          <button
-            className="btn btn-primary text-white mr-6"
-            onClick={() => router.push("/project-description/contribution")}
-          >
-            Start Contribute
-          </button>
+          <div className="dropdown dropdown-end">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-primary text-white m-1"
+            >
+              Start Contribute
+            </div>
+            <ul
+              tabIndex={0}
+              className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-[500px]"
+            >
+              <div className="p-4">
+                <p className="text-xl font-semibold"> Clone</p>
+
+                <CopyButton />
+                <p className="mt-4 font-semibold">
+                  Clone project using web url
+                </p>
+              </div>
+              <div className="divider">OR</div>
+              <li className="p-4 ">
+                <button className="btn btn-primary text-white w-[8rem]">
+                  Connect{" "}
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
 
         {/* project description section */}
         <div className="mt-4">
           <p className="text-xl font-semibold">Description</p>
-          <p className="mt-2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Sagittis
-            purus sit amet volutpat consequat mauris nunc. Cursus euismod quis
-            viverra nibh. Sollicitudin aliquam ultrices sagittis orci a
-            scelerisque purus. Enim nunc faucibus a pellentesque sit amet
-            porttitor. Facilisis volutpat est velit egestas dui id ornare arcu.
-            Nisl condimentum id venenatis a condimentum vitae sapien. Rhoncus
-            mattis rhoncus urna neque viverra justo nec. Imperdiet dui accumsan
-            sit amet nulla facilisi morbi tempus. Sollicitudin nibh sit amet
-            commodo nulla facilisi nullam vehicula ipsum. Sit amet est placerat
-            in egestas erat. At auctor urna nunc id cursus metus aliquam.
-            Tincidunt arcu non sodales neque sodales ut. Pulvinar etiam non quam
-            lacus suspendisse faucibus interdum posuere lorem.
-          </p>
+          <p className="mt-2">{projectDetails?.description}</p>
         </div>
 
         {/* contributos section  */}
@@ -151,35 +181,22 @@ const ProjectDescription = () => {
         <div className="flex items-center gap-2  font-semibold">
           <img
             class="w-12 h-12 border-2 border-white rounded-full dark:border-gray-800"
-            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aGVhZHNob3R8ZW58MHx8MHx8fDA%3D"
+            src={`${imgUrl}${projectDetails?.author?.img}`}
             alt=""
           />
           <div>
-            <p className="text-xl">Aditya Kumar</p>
+            <p className="text-xl">{projectDetails?.author?.fullName}</p>
             <p className="text-sm text-gray-500">Software Developer</p>
           </div>
         </div>
-        <p className="mt-6 text-gray-500">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </p>
+        <p className="mt-6 text-gray-500">{projectDetails?.author?.bio}</p>
         <div className="divider"></div>
         <div>
           <p className="text-2xl font-semibold">Project Tags</p>
           <div className="flex gap-2 flex-wrap mt-4">
-            <div className="badge badge-primary">React.js</div>
-            <div className="badge badge-primary">Next.js</div>
-            <div className="badge badge-primary">Firebase</div>
-            <div className="badge badge-primary">Socket</div>
-            <div className="badge badge-primary">Websocket</div>
-            <div className="badge badge-primary">javascript</div>
-            <div className="badge badge-primary">Nodejs</div>
-            <div className="badge badge-primary">Expressjs</div>
+            {projectDetails?.tags?.map((item, index) => (
+              <div className="badge badge-primary">{item.label}</div>
+            ))}
           </div>
         </div>
         <div className="divider"></div>

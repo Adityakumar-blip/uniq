@@ -18,8 +18,6 @@ const ProjectDescription = () => {
     }
   }, []);
 
-  console.log("projectDetails", projectDetails);
-
   // const options = { day: "numeric", month: "long", year: "numeric" };
   // const formattedDate = projectDetails?.createdAt.toLocaleDateString(
   //   "en-US",

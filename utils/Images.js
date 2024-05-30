@@ -6,20 +6,12 @@ import milad1 from "@/assets/milad-fakurian-1.jpg";
 import mohammad from "@/assets/mohammad-alizade.jpg";
 
 const RandomImages = [
-  {
-    img: hassan,
-    id: 0,
-    name: "hassaan-here",
-  },
-  {
-    img: magicpattern,
-    id: 1,
-    name: "magicpattern",
-  },
-  {
-    img: magicpattern1,
-    id: 2,
-    name: "magicpattern",
-  },
-  {},
+  { id: 0, name: "hassaan-here", file: hassan },
+  { id: 1, name: "magicpattern", file: magicpattern },
+  { id: 2, name: "magicpattern", file: magicpattern1 },
+  { id: 3, name: "milad-fakurian", file: milad },
+  { id: 4, name: "milad-fakurian", file: milad1 },
+  { id: 5, name: "mohammad alizade", file: mohammad },
 ];
+
+export default RandomImages;

@@ -16,7 +16,7 @@ const ProjectDescription = () => {
     if (id) {
       dispatch(GetProjectById(id));
     }
-  }, []);
+  }, [id]);
 
   console.log("projectDetails", projectDetails);
 
@@ -45,7 +45,7 @@ const ProjectDescription = () => {
               <div className="p-4">
                 <p className="text-xl font-semibold"> Clone</p>
 
-                <CopyButton />
+                <CopyButton url={projectDetails?.githubUrl || ""} />
                 <p className="mt-4 font-semibold">
                   Clone project using web url
                 </p>

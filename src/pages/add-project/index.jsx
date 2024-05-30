@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AddProject, GetAllCommon } from "@/Store/Reducers/ProjectSlice";
 import MultiSelectDropdown from "@/components/MultipleSelection";
 import projectSchema from "../../../utils/schema";
+import RandomImages from "../../../utils/Images";
 
 const initialValues = {
   name: "",
@@ -34,6 +35,36 @@ const Index = () => {
     }
   };
 
+  const srcToFile = (src, fileName, mimeType) => {
+    return fetch(src)
+      .then(function (res) {
+        return res.arrayBuffer();
+      })
+      .then(function (buf) {
+        return new File([buf], fileName, { type: mimeType });
+      });
+  };
+
+  const getRandomImage = async () => {
+    const randomIndex = Math.floor(Math.random() * RandomImages.length);
+    const randomImage = RandomImages[randomIndex];
+
+    const response = await fetch(randomImage.file.src).then((r) => r.blob());
+    console.log(response);
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setSelectedImage(reader.result);
+
+      srcToFile(reader.result, "hello.png", "image/png").then(function (file) {
+        formik.setFieldValue("img", file);
+        // console.log();
+      });
+    };
+    // console.log(randomImage.file);
+    reader.readAsDataURL(response);
+  };
+
   const handleRemoveImg = () => {
     setSelectedImage(null);
   };
@@ -59,6 +90,7 @@ const Index = () => {
     },
   });
 
+  console.log(formik.values);
   const { tags, technologies } = useSelector(
     ({ ProjectSlice }) => ProjectSlice
   );
@@ -67,6 +99,8 @@ const Index = () => {
     dispatch(GetAllCommon("tags"));
     dispatch(GetAllCommon("technologies"));
   }, []);
+
+  console.log("Formik values", formik.values);
 
   return (
     <div className="p-10">
@@ -104,6 +138,7 @@ const Index = () => {
               <button
                 htmlFor="imageUpload"
                 className="btn  w-[10rem] text-white cursor-pointer"
+                onClick={() => getRandomImage()}
               >
                 Choose Random
               </button>

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React, { useState, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-const CopyButton = () => {
+const CopyButton = ({ url }) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [copied, setCopied] = useState(false);
   const inputRef = useRef(null);
@@ -53,7 +53,7 @@ const CopyButton = () => {
           id="npm-install-copy-button"
           type="text"
           className="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          value="https://github.com/Adityakumar-blip/uniq.git"
+          value={url}
           disabled
           readOnly
           ref={inputRef}

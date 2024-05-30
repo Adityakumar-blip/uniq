@@ -5,17 +5,19 @@ import { addProject } from "../../../utils/projectfire";
 import { useDispatch } from "react-redux";
 import { AddProject } from "@/Store/Reducers/ProjectSlice";
 import MultiSelectDropdown from "@/components/MultipleSelection";
+import projectSchema from "../../../utils/schema";
 
 const initialValues = {
   name: "",
   description: "",
   shortIntro: "",
   img: "",
+  githubUrl: "",
   techstack: [],
   tags: [],
 };
 
-const index = () => {
+const Index = () => {
   const dispatch = useDispatch();
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -38,6 +40,7 @@ const index = () => {
 
   const formik = useFormik({
     initialValues: initialValues,
+    validationSchema: projectSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
       const formData = new FormData();
@@ -57,6 +60,8 @@ const index = () => {
   });
 
   console.log("Formik values", formik.values);
+
+  console.log("errors", formik.errors);
 
   const options = [
     { value: "option1", label: "Option 1" },
@@ -105,7 +110,7 @@ const index = () => {
           )}
         </div>
         <form>
-          <div class="grid gap-4 mt-4 md:grid-cols-2">
+          <div className="grid gap-4 mt-4 md:grid-cols-2">
             <div>
               <div className="label">
                 <span className=" text-black text-lg font-semibold">
@@ -116,6 +121,8 @@ const index = () => {
                 name="name"
                 value={formik.values.name}
                 onChange={formik.handleChange}
+                errors={formik.errors.name}
+                touched={formik.touched.name}
               />
             </div>
             <div className="dropdown-select">
@@ -127,10 +134,17 @@ const index = () => {
               <MultiSelectDropdown
                 options={options}
                 onChange={(data) => formik.setFieldValue("techstack", data)}
+                errors={formik.errors["techstack"]}
+                touched={formik.touched["techstack"]}
               />
+              {/* {formik.errors.techstack && formik.touched.techstack && (
+                <div className="text-red-500 text-sm">
+                  {formik.errors.techstack}
+                </div>
+              )} */}
             </div>
           </div>
-          <div class="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 md:grid-cols-2">
             <div>
               <div className="label">
                 <span className=" text-black text-lg font-semibold">
@@ -140,7 +154,12 @@ const index = () => {
               <MultiSelectDropdown
                 options={options}
                 onChange={(data) => formik.setFieldValue("tags", data)}
+                errors={formik.errors["tags"]}
+                touched={formik.touched["tags"]}
               />
+              {/* {formik.errors.tags && formik.touched.tags && (
+                <div className="text-red-500 text-sm">{formik.errors.tags}</div>
+              )} */}
             </div>
             <div>
               <div className="label">
@@ -152,10 +171,26 @@ const index = () => {
                 name="shortIntro"
                 value={formik.values.shortIntro}
                 onChange={formik.handleChange}
+                errors={formik.errors.shortIntro}
+                touched={formik.touched.shortIntro}
               />
             </div>
           </div>
-          <div class="grid gap-4 md:grid-cols-2">
+          <div>
+            <div className="label">
+              <span className=" text-black text-lg font-semibold">
+                Github URL
+              </span>
+            </div>
+            <InputWithLable
+              name="githubUrl"
+              value={formik.values.githubUrl}
+              onChange={formik.handleChange}
+              errors={formik.errors.githubUrl}
+              touched={formik.touched.githubUrl}
+            />
+          </div>
+          <div className="grid gap-4 md:grid-cols-2">
             <div>
               <div className="label">
                 <span className=" text-black text-lg font-semibold">
@@ -163,14 +198,23 @@ const index = () => {
                 </span>
               </div>
               <textarea
-                id="message"
+                id="description"
                 rows="4"
                 name="description"
                 value={formik.values.description}
                 onChange={formik.handleChange}
-                class="block p-2.5 w-full ring-blue-500 text-sm text-gray-900 bg-gray-50 rounded-lg border border-blue-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-[#3b82f6] dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className={`block p-2.5 w-full ring-blue-500 text-sm text-gray-900 bg-gray-50 rounded-lg border ${
+                  formik.errors.description && formik.touched.description
+                    ? "border-red-500"
+                    : "border-blue-300"
+                } focus:ring-blue-500 focus:border-blue-500`}
                 placeholder="Write your thoughts here..."
               ></textarea>
+              {formik.errors.description && formik.touched.description && (
+                <div className="text-red-500 text-sm">
+                  {formik.errors.description}
+                </div>
+              )}
             </div>
             <div>
               <div className="label">
@@ -179,12 +223,23 @@ const index = () => {
                 </span>
               </div>
               <textarea
-                id="message"
-                name=""
+                id="specialRequirements"
+                name="specialRequirements"
                 rows="4"
-                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-[#3b82f6] dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500  dark:focus:border-blue-500"
+                className={`block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border ${
+                  formik.errors.specialRequirements &&
+                  formik.touched.specialRequirements
+                    ? "border-red-500"
+                    : "border-gray-300"
+                } focus:ring-blue-500 focus:border-blue-500`}
                 placeholder="Write your thoughts here..."
               ></textarea>
+              {formik.errors.specialRequirements &&
+                formik.touched.specialRequirements && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.specialRequirements}
+                  </div>
+                )}
             </div>
           </div>
 
@@ -218,4 +273,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

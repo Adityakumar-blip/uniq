@@ -20,17 +20,14 @@ const ProjectDescription = () => {
 
   console.log("projectDetails", projectDetails);
 
-  // const options = { day: "numeric", month: "long", year: "numeric" };
-  // const formattedDate = projectDetails?.createdAt.toLocaleDateString(
-  //   "en-US",
-  //   options
-  // );
   return (
-    <div className="flex gap-6 py-16 px-16 h-max dark:bg-black bg-white">
+    <div className="flex gap-6 py-16 px-16 h-max  bg-white">
       <div className="w-8/12">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-4xl font-bold">{projectDetails?.name}</p>
+            <p className="text-4xl text-black font-bold">
+              {projectDetails?.name}
+            </p>
             <p className="mt-2 text-gray-400">Launched on July 1 2029</p>
           </div>
           <div className="dropdown dropdown-end">
@@ -64,13 +61,13 @@ const ProjectDescription = () => {
         </div>
 
         {/* project description section */}
-        <div className="mt-4">
+        <div className="mt-4 text-black">
           <p className="text-xl font-semibold">Description</p>
           <p className="mt-2">{projectDetails?.description}</p>
         </div>
 
         {/* contributos section  */}
-        <div className="mt-4">
+        <div className="mt-4 text-black">
           <p className="text-xl font-semibold">Contributors</p>
           <div class="flex mb-3 mt-3 -space-x-2 rtl:space-x-reverse">
             <img
@@ -109,7 +106,7 @@ const ProjectDescription = () => {
 
         {/* project progress section  */}
         <div className="mt-4">
-          <p className="text-xl font-semibold">Progress</p>
+          <p className="text-xl text-black font-semibold">Progress</p>
           <div class="w-[80%] bg-gray-200 mt-4 rounded-full h-2.5 dark:bg-gray-700">
             <div
               class="bg-blue-600 h-2.5 rounded-full"
@@ -119,7 +116,7 @@ const ProjectDescription = () => {
         </div>
 
         {/* project links section */}
-        <div className="w-[80%] mt-6">
+        <div className="w-[80%] text-black mt-6">
           <p className="text-xl font-semibold">Project Links</p>
           <div className="flex mt-4 items-center justify-between">
             <div>
@@ -177,7 +174,7 @@ const ProjectDescription = () => {
           </div>
         </div>
       </div>
-      <div className="w-4/12">
+      <div className="w-4/12 text-black">
         <div className="flex items-center gap-2  font-semibold">
           <img
             class="w-12 h-12 border-2 border-white rounded-full dark:border-gray-800"

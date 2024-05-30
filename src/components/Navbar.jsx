@@ -27,8 +27,9 @@ const Navbar = () => {
               class="h-8"
               alt="Flowbite Logo"
             /> */}
+
             <span class="self-center text-2xl font-semibold font-mono text-black whitespace-nowrap ">
-              dlabss
+              dlabss_
             </span>
           </a>
           <button

@@ -1,4 +1,7 @@
-import React from "react";
+import { AddCommon } from "@/Store/Reducers/ProjectSlice";
+import { useFormik } from "formik";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
@@ -68,15 +71,63 @@ const customStyles = {
   }),
 };
 
-export default function MultiSelectDropdown({ options, onChange }) {
+export default function MultiSelectDropdown({ options, onChange, type }) {
+  const dispatch = useDispatch();
+
+  const [newOption, setNewOptions] = useState([]);
+
+  useEffect(() => {
+    setNewOptions(options);
+  }, [options]);
+
+  const initialValues = {
+    name: "",
+    status: true,
+    type: type,
+  };
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    onSubmit: (values) => {
+      try {
+        dispatch(AddCommon(values)).then((result) => {
+          if (result.payload.status === 201) {
+            setNewOptions([...options, result.payload.data.data[0]]);
+          }
+        });
+      } catch (error) {}
+    },
+  });
+
+  const handleCreate = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <Select
       styles={customStyles}
       closeMenuOnSelect={false}
+      onInputChange={(e) => {
+        formik.setFieldValue("name", e);
+      }}
       components={animatedComponents}
       isMulti
-      options={options}
+      options={newOption}
       onChange={onChange}
+      noOptionsMessage={() => (
+        <div>
+          <p>No result found, create one</p>
+          <button
+            className="btn btn-primary"
+            onClick={(e) => {
+              e.preventDefault();
+              formik.handleSubmit();
+            }}
+          >
+            Create
+          </button>
+        </div>
+      )}
     />
   );
 }

@@ -29,9 +29,13 @@ const Index = () => {
         <SeaarchInput />
       </div>
       <div className="mt-6 pb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {projects.map((item, index) => (
-          <ProjectsCard key={index} props={item} />
-        ))}
+        {projects.length > 0
+          ? projects?.map((item, index) => (
+              <ProjectsCard key={index} props={item} />
+            ))
+          : projectData?.map((item, index) => (
+              <ProjectsCard key={index} props={item} />
+            ))}
       </div>
     </div>
   );

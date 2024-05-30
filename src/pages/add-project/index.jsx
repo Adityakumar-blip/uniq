@@ -1,9 +1,9 @@
 import InputWithLable from "@/components/InputWithLable";
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { addProject } from "../../../utils/projectfire";
-import { useDispatch } from "react-redux";
-import { AddProject } from "@/Store/Reducers/ProjectSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AddProject, GetAllCommon } from "@/Store/Reducers/ProjectSlice";
 import MultiSelectDropdown from "@/components/MultipleSelection";
 import projectSchema from "../../../utils/schema";
 
@@ -59,15 +59,15 @@ const Index = () => {
     },
   });
 
-  console.log("Formik values", formik.values);
+  const { tags, technologies } = useSelector(
+    ({ ProjectSlice }) => ProjectSlice
+  );
 
-  console.log("errors", formik.errors);
+  useEffect(() => {
+    dispatch(GetAllCommon("tags"));
+    dispatch(GetAllCommon("technologies"));
+  }, []);
 
-  const options = [
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
-  ];
   return (
     <div className="p-10">
       <div>
@@ -94,12 +94,20 @@ const Index = () => {
             id="imageUpload"
           />
           {!selectedImage ? (
-            <label
-              htmlFor="imageUpload"
-              className="btn w-[10rem] text-white cursor-pointer"
-            >
-              Upload
-            </label>
+            <div className="flex items-center gap-2">
+              <label
+                htmlFor="imageUpload"
+                className="btn btn-primary w-[10rem] text-white cursor-pointer"
+              >
+                Upload
+              </label>
+              <button
+                htmlFor="imageUpload"
+                className="btn  w-[10rem] text-white cursor-pointer"
+              >
+                Choose Random
+              </button>
+            </div>
           ) : (
             <button
               className="btn w-[10rem] text-white cursor-pointer"
@@ -132,10 +140,9 @@ const Index = () => {
                 </span>
               </div>
               <MultiSelectDropdown
-                options={options}
+                options={technologies}
                 onChange={(data) => formik.setFieldValue("techstack", data)}
-                errors={formik.errors["techstack"]}
-                touched={formik.touched["techstack"]}
+                type="technology"
               />
               {/* {formik.errors.techstack && formik.touched.techstack && (
                 <div className="text-red-500 text-sm">
@@ -152,10 +159,9 @@ const Index = () => {
                 </span>
               </div>
               <MultiSelectDropdown
-                options={options}
+                options={tags}
                 onChange={(data) => formik.setFieldValue("tags", data)}
-                errors={formik.errors["tags"]}
-                touched={formik.touched["tags"]}
+                type="tags"
               />
               {/* {formik.errors.tags && formik.touched.tags && (
                 <div className="text-red-500 text-sm">{formik.errors.tags}</div>

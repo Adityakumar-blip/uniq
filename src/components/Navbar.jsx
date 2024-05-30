@@ -1,23 +1,30 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { imgUrl } from "../../utils/HTTP";
+import { clearToken } from "@/Store/Reducers/CommonSlice";
 
 const Navbar = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState(null);
   const path = router.asPath;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const user = localStorage.getItem("user");
-      console.log("user", user);
+
       if (user && user !== "undefined") {
         setUserInfo(JSON.parse(user));
       }
     }
   }, []);
   const { token } = useSelector(({ CommonSlice }) => CommonSlice);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    dispatch(clearToken());
+  };
 
   return (
     <div>
@@ -132,7 +139,7 @@ const Navbar = () => {
                         <li>
                           <a>Profile</a>
                         </li>
-                        <li>
+                        <li onClick={() => handleLogout()}>
                           <a>Logout</a>
                         </li>
                       </ul>

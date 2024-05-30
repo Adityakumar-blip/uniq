@@ -4,7 +4,7 @@ import axios from "axios";
 export const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000/api/";
 
-export const imgUrl = "http://localhost:3000/";
+export const imgUrl = "http://localhost:3000";
 
 let apiCalled = false;
 

@@ -1,7 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
+  AddCommonApi,
   AddProjectApi,
   ContributeApi,
+  GetAllCommonApi,
   GetAllProjectsApi,
   GetProjectByIdApi,
 } from "../Services/Service";
@@ -9,6 +11,8 @@ import {
 const initialState = {
   projects: [],
   projectDetails: {},
+  tags: [],
+  technologies: [],
 };
 
 export const AddProject = createAsyncThunk(
@@ -89,6 +93,46 @@ export const ContributeToProject = createAsyncThunk(
     }
   }
 );
+
+export const AddCommon = createAsyncThunk(
+  "AddCommon",
+  async (values, { dispatch }) => {
+    try {
+      // dispatch(setLoading(true));
+      const result = await AddCommonApi(values);
+      //   dispatch(setLoading(false));
+      if (result) {
+        return result;
+      } else {
+        throw result;
+      }
+    } catch (error) {
+      const errorMessage = error?.message || "An error occurred.";
+      //   dispatch(setMessage({ text: errorMessage, type: AlertEnum.Error }));
+      throw error;
+    }
+  }
+);
+
+export const GetAllCommon = createAsyncThunk(
+  "GetAllCommon",
+  async (values, { dispatch }) => {
+    try {
+      // dispatch(setLoading(true));
+      const result = await GetAllCommonApi(values);
+      //   dispatch(setLoading(false));
+      if (result) {
+        return result;
+      } else {
+        throw result;
+      }
+    } catch (error) {
+      const errorMessage = error?.message || "An error occurred.";
+      //   dispatch(setMessage({ text: errorMessage, type: AlertEnum.Error }));
+      throw error;
+    }
+  }
+);
 export const ProjectSlice = createSlice({
   name: "ProjectSlice",
   initialState,
@@ -100,6 +144,13 @@ export const ProjectSlice = createSlice({
     });
     builder.addCase(GetProjectById.fulfilled, (state, action) => {
       state.projectDetails = action.payload.data;
+    });
+    builder.addCase(GetAllCommon.fulfilled, (state, action) => {
+      if (action.payload.data.type === "tags") {
+        state.tags = action.payload.data.data;
+      } else {
+        state.technologies = action.payload.data.data;
+      }
     });
   },
 });

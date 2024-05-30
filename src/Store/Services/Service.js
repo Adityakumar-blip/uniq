@@ -12,3 +12,6 @@ export const GetProjectByIdApi = (data) =>
   GET(`${BASE_URL}projects/getProjectById?_id=${data}`);
 export const ContributeApi = (data) =>
   POST(`${BASE_URL}projects/contribute`, data);
+export const AddCommonApi = (data) => POST(`${BASE_URL}common/addCommon`, data);
+export const GetAllCommonApi = (data) =>
+  GET(`${BASE_URL}common/getAllCommon?type=${data}`);

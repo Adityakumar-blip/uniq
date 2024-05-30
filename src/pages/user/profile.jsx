@@ -8,7 +8,7 @@ const profile = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const user = localStorage.getItem("user");
-      if (user) {
+      if (user && user === "undefined") {
         setUserInfo(JSON.parse(user));
       }
     }

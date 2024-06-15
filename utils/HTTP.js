@@ -2,9 +2,9 @@ import axios from "axios";
 
 // https://uniq-backend.onrender.com/api/
 export const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000/api/";
+  process.env.NEXT_PUBLIC_BASE_URL || "https://uniq-backend.onrender.com/api/";
 
-export const imgUrl = "http://localhost:3000";
+export const imgUrl = "https://uniq-backend.onrender.com/";
 
 let apiCalled = false;
 

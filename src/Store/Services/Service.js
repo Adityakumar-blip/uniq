@@ -7,7 +7,9 @@ export const UpdateUserApi = (data) => POST(`${BASE_URL}user/updateUser`, data);
 export const AddProjectApi = (data) =>
   POST(`${BASE_URL}projects/addProject`, data);
 export const GetAllProjectsApi = (data) =>
-  GET(`${BASE_URL}projects/getAllProject`, data);
+  GET(
+    `${BASE_URL}projects/getAllProject?search=${data.search}&take=${data.take}&page=${data.page}`
+  );
 export const GetProjectByIdApi = (data) =>
   GET(`${BASE_URL}projects/getProjectById?_id=${data}`);
 export const ContributeApi = (data) =>

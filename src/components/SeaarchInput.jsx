@@ -1,6 +1,6 @@
 import React from "react";
 
-const SeaarchInput = () => {
+const SeaarchInput = ({ onChange }) => {
   return (
     <div>
       <form class="w-[5 0%] mt-8 rounded-full">
@@ -34,7 +34,7 @@ const SeaarchInput = () => {
             class="block w-full  p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50  dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 font-semibold leading-3  
             "
             placeholder="Search all projects"
-            required
+            onChange={onChange}
           />
         </div>
       </form>

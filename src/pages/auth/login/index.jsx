@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useDispatch } from "react-redux";
 
+import astronaut from "@/assets/astronaut.png";
+
 const index = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -30,7 +32,7 @@ const index = () => {
 
   return (
     // <div className="text-black text-4xl bg-black h-screen p-12 flex">
-    <div className="bg-white w-full h-screen rounded-xl flex flex-col md:flex-row">
+    <div className="bg-white w-full h-screen  flex flex-col md:flex-row">
       <div className="w-full flex flex-col  justify-center md:w-1/2 p-4">
         <div className="p-8 md:p-10 lg:p-10">
           <p className="font-semibold text-black text-4xl">Get Started Now</p>
@@ -125,7 +127,7 @@ const index = () => {
               id="helper-text-explanation"
               className="mt-6 text-sm text-gray-500 dark:text-gray-400"
             >
-              New on uniqq?
+              New on dlabss?
               <a
                 href="/auth/signup"
                 className="font-medium ml-2 text-blue-600 hover:underline dark:text-blue-500"
@@ -139,7 +141,7 @@ const index = () => {
       </div>
       <div className="hidden md:block w-1/2 p-4">
         <img
-          src="https://img.freepik.com/free-vector/realistic-3d-shapes-floating-background_23-2148902504.jpg?size=626&ext=jpg"
+          src={astronaut.src}
           alt="Background Image"
           className="h-full w-full rounded-xl object-cover"
         />

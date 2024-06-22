@@ -2,9 +2,9 @@ import axios from "axios";
 
 // https://uniq-backend.onrender.com/api/
 export const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://uniq-backend.onrender.com/api/";
+  process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000/api/";
 
-export const imgUrl = "https://uniq-backend.onrender.com/";
+export const imgUrl = "";
 
 let apiCalled = false;
 
@@ -29,6 +29,7 @@ export const POST = async (url, data) => {
             localStorage.clear();
             window.location.href = "/auth/signin";
           }
+          console.log("result", result);
           throw result;
         } else {
           return result;

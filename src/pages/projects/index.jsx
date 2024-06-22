@@ -49,12 +49,12 @@ const Index = () => {
         <Filters />
       </div>
       <div className="mt-6 pb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {projects.length > 0 ? (
+        {projects && projects.length > 0 ? (
           projects?.map((item, index) => (
             <ProjectsCard key={index} props={item} />
           ))
         ) : (
-          <div className="w-full flex items-center justify-center">
+          <div className="w-[90vh] flex items-center justify-center">
             <div className="flex flex-col items-center justify-center">
               <Image src={dog} height={250} alt="No Data" />
               <p className="text-black">No Data Found</p>

@@ -7,6 +7,7 @@ import {
   GetAllProjectsApi,
   GetProjectByIdApi,
 } from "../Services/Service";
+import { setLoading } from "./CommonSlice";
 
 const initialState = {
   projects: [],
@@ -39,9 +40,9 @@ export const GetAllProject = createAsyncThunk(
   "GetAllProject",
   async (values, { dispatch }) => {
     try {
-      // dispatch(setLoading(true));
+      dispatch(setLoading(true));
       const result = await GetAllProjectsApi(values);
-      //   dispatch(setLoading(false));
+      dispatch(setLoading(false));
       if (result) {
         return result;
       } else {
@@ -146,10 +147,12 @@ export const ProjectSlice = createSlice({
       state.projectDetails = action.payload.data;
     });
     builder.addCase(GetAllCommon.fulfilled, (state, action) => {
-      if (action.payload.data.type === "tags") {
-        state.tags = action.payload.data.data;
-      } else {
-        state.technologies = action.payload.data.data;
+      if (action.payload.data) {
+        if (action.payload.data.type === "tags") {
+          state.tags = action.payload.data.data;
+        } else {
+          state.technologies = action.payload.data.data;
+        }
       }
     });
   },

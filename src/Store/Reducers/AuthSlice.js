@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { LoginApi, SignupApi, UpdateUserApi } from "../Services/Service";
+import { setLoading } from "./CommonSlice";
 
 const initialState = {
   projects: [],
@@ -9,7 +10,7 @@ export const SignIn = createAsyncThunk(
   "SignIn",
   async (values, { dispatch }) => {
     try {
-      // dispatch(setLoading(true));
+      dispatch(setLoading(true));
       const result = await LoginApi(values);
       //   dispatch(setLoading(false));
       console.log("Result of login", result);
@@ -22,6 +23,8 @@ export const SignIn = createAsyncThunk(
       const errorMessage = error?.message || "An error occurred.";
       //   dispatch(setMessage({ text: errorMessage, type: AlertEnum.Error }));
       throw error;
+    } finally {
+      setLoading(false);
     }
   }
 );
@@ -51,10 +54,9 @@ export const UpdateUser = createAsyncThunk(
   "UpdateUser",
   async (values, { dispatch }) => {
     try {
-      // dispatch(setLoading(true));
+      dispatch(setLoading(true));
       const result = await UpdateUserApi(values);
-      //   dispatch(setLoading(false));
-      console.log("Result of update user", result);
+      dispatch(setLoading(false));
       if (result) {
         return result;
       } else {

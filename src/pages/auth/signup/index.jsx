@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useDispatch } from "react-redux";
 
+import sea from "@/assets/sea.jpg";
+
 const index = () => {
   const router = useRouter();
 
@@ -36,7 +38,7 @@ const index = () => {
 
   return (
     // <div className="text-black text-4xl bg-black h-screen p-12 flex">
-    <div className="bg-white w-full h-screen rounded-xl flex flex-col md:flex-row">
+    <div className="bg-white w-full h-screen  flex flex-col md:flex-row">
       <div className="w-full flex flex-col  justify-center md:w-1/2 p-4">
         <div className="p-8 md:p-10 lg:p-10">
           <p className="font-semibold text-black text-4xl">Get Started Now</p>
@@ -162,11 +164,7 @@ const index = () => {
         </div>
       </div>
       <div className="hidden md:block w-1/2 p-4">
-        <img
-          src="https://cdn.dribbble.com/users/9693173/screenshots/17196561/media/10da62ed1e94174b5a5c61329f24bb18.jpeg?resize=400x300&vertical=center"
-          alt="Background Image"
-          className="h-full w-full rounded-xl object-cover"
-        />
+        <img src={sea.src} className="h-full w-full rounded-xl object-cover" />
       </div>
     </div>
     // </div>

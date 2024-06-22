@@ -1,7 +1,7 @@
 import { ContributeToProject } from "@/Store/Reducers/ProjectSlice";
 import { useRouter } from "next/router";
 import React, { useState, useRef, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const CopyButton = ({ url }) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -11,6 +11,8 @@ const CopyButton = ({ url }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
+
+  const { token } = useSelector(({ CommonSlice }) => CommonSlice);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -30,17 +32,21 @@ const CopyButton = ({ url }) => {
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(inputRef.current.value).then(() => {
-      setCopied(true);
-      setTooltipVisible(true);
+    if (token) {
+      navigator.clipboard.writeText(inputRef.current.value).then(() => {
+        setCopied(true);
+        setTooltipVisible(true);
 
-      dispatch(ContributeToProject({ projectId: id, userId: userInfo?._id }));
+        dispatch(ContributeToProject({ projectId: id, userId: userInfo?._id }));
 
-      setTimeout(() => {
-        setCopied(false);
-        setTooltipVisible(false);
-      }, 2000);
-    });
+        setTimeout(() => {
+          setCopied(false);
+          setTooltipVisible(false);
+        }, 2000);
+      });
+    } else {
+      alert("please login to contribute");
+    }
   };
 
   return (

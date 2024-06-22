@@ -1,33 +1,67 @@
 import React, { useEffect, useState } from "react";
 import { imgUrl } from "../../../utils/HTTP";
 import TabComponent from "@/components/TabComponent";
+import ContributionHeatmap from "@/components/ContributonGraph";
+import ProfileModal from "@/components/ProfileModal";
+import Image from "next/image";
 
 const profile = () => {
   const [userInfo, setUserInfo] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState("");
+
+  const openModal = (content) => {
+    setModalContent(content);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalContent("");
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const user = localStorage.getItem("user");
-      if (user && user === "undefined") {
+      if (user) {
         setUserInfo(JSON.parse(user));
       }
     }
   }, []);
+
   return (
     <div className=" ">
-      <div className="p-6">
+      <ProfileModal
+        isOpen={isModalOpen}
+        closeModal={() => setIsModalOpen(false)}
+        id={userInfo?._id}
+      />
+      <div className="p-6 ">
         <p className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold text-black">
           {userInfo?.fullName}
         </p>
+        <div className="flex items-center justify-between mt-6 px-4">
+          <p className="text-black text-xl font-semibold">{userInfo?.email}</p>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="px-4 py-2 border border-gray-500 rounded-full cursor-pointer"
+          >
+            <p className="text-black">Edit Profile</p>
+          </button>
+        </div>
       </div>
       <div className="divider divider-primary" />
-      <div className="grid grid-cols-1 md:grid-cols-2 items-center p-6 gap-6">
+      <div className="mx-12 p-10 rounded-md shadow-md">
+        <ContributionHeatmap />
+      </div>
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 items-center p-6 gap-6">
         <div id="div1" className="flex justify-center">
           <img
             src={`${imgUrl}${userInfo?.img}`}
             className="w-[300px] sm:w-[400px] h-[400px] sm:h-[500px] object-cover"
           />
         </div>
+
         <div
           id="div2"
           className="w-full md:w-[70%] flex flex-col gap-6 md:gap-20"
@@ -67,10 +101,10 @@ const profile = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="w-screen p-6">
+      </div> */}
+      {/* <div className="w-screen p-6">
         <TabComponent />
-      </div>
+      </div> */}
     </div>
   );
 };

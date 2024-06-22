@@ -31,12 +31,6 @@ const Navbar = () => {
       <nav class="bg-white border-gray-200 ">
         <div class="w-full-xl px-10 flex flex-wrap items-center justify-between mx-auto p-4">
           <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
-            {/* <img
-              src="https://flowbite.com/docs/images/logo.svg"
-              class="h-8"
-              alt="Flowbite Logo"
-            /> */}
-
             <span class="self-center text-2xl font-semibold font-mono text-black whitespace-nowrap ">
               dlabss_
             </span>
@@ -67,18 +61,19 @@ const Navbar = () => {
           </button>
           <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
             <ul class="flex items-center flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0  ">
-              <li>
-                <a
-                  href="/home "
-                  class={`block py-2 px-3 ${
-                    path === "/" ? "text-primary" : "text-black"
-                  } `}
-                  aria-current="page"
-                >
-                  Home
-                </a>
-              </li>
-
+              {!token && (
+                <li>
+                  <a
+                    href="/home "
+                    class={`block py-2 px-3 ${
+                      path === "/" ? "text-primary" : "text-black"
+                    } `}
+                    aria-current="page"
+                  >
+                    Home
+                  </a>
+                </li>
+              )}
               <li>
                 <a
                   href="/projects"
@@ -101,12 +96,12 @@ const Navbar = () => {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/discussion"
                   class={`block py-2 px-3 ${
-                    path === "/contact" ? "text-primary" : "text-gray-900"
+                    path === "/community" ? "text-primary" : "text-gray-900"
                   } rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0  md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`}
                 >
-                  Contact
+                  Community
                 </a>
               </li>
               {token ? (
@@ -125,7 +120,6 @@ const Navbar = () => {
                         tabIndex={0}
                         role="button"
                         className="flex items-center gap-2 m-1  font-semibold"
-                        onClick={() => router.push("/user/profile")}
                       >
                         <img
                           class="w-12 h-12 border-2 border-white rounded-full dark:border-gray-800"
@@ -137,7 +131,7 @@ const Navbar = () => {
                         tabIndex={0}
                         className="dropdown-content z-[1] menu  p-2 shadow bg-base-100 rounded-box w-52"
                       >
-                        <li>
+                        <li onClick={() => router.push("/user/profile")}>
                           <a>Profile</a>
                         </li>
                         <li onClick={() => handleLogout()}>

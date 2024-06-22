@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   token: null,
+  loading: false,
 };
 
 const CommonSlice = createSlice({
@@ -15,10 +16,13 @@ const CommonSlice = createSlice({
     clearToken: (state) => {
       state.token = null;
     },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
   },
 });
 
-export const { setToken, clearToken } = CommonSlice.actions;
+export const { setToken, clearToken, setLoading } = CommonSlice.actions;
 
 export const loadTokenFromLocalStorage = () => (dispatch) => {
   const token = localStorage.getItem("token");

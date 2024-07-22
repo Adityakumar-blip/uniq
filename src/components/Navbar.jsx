@@ -3,9 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { imgUrl } from "../../utils/HTTP";
 import { clearToken } from "@/Store/Reducers/CommonSlice";
+import routes from "../../utils/routes";
+import UseNavigateToRoute from "../../utils/navigtion";
 
 const Navbar = () => {
   const router = useRouter();
+  const NavigateToRoute = UseNavigateToRoute();
   const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState(null);
   const path = router.asPath;
@@ -61,22 +64,8 @@ const Navbar = () => {
           </button>
           <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
             <ul class="flex items-center flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0  ">
-              {!token && (
-                <li>
-                  <a
-                    href="/home "
-                    class={`block py-2 px-3 ${
-                      path === "/" ? "text-primary" : "text-black"
-                    } `}
-                    aria-current="page"
-                  >
-                    Home
-                  </a>
-                </li>
-              )}
-              <li>
+              <li onClick={() => NavigateToRoute("/projects")}>
                 <a
-                  href="/projects"
                   class={`block py-2 px-3 ${
                     path === "/projects" ? "text-primary" : "text-gray-900"
                   } rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0  md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`}
@@ -84,7 +73,7 @@ const Navbar = () => {
                   Projects
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a
                   href="/developers"
                   class={`block py-2 px-3 ${
@@ -93,12 +82,11 @@ const Navbar = () => {
                 >
                   Developers
                 </a>
-              </li>
-              <li>
+              </li> */}
+              <li onClick={() => NavigateToRoute("/discussion")}>
                 <a
-                  href="/discussion"
                   class={`block py-2 px-3 ${
-                    path === "/community" ? "text-primary" : "text-gray-900"
+                    path === "/discussion" ? "text-primary" : "text-gray-900"
                   } rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0  md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`}
                 >
                   Community
@@ -150,7 +138,10 @@ const Navbar = () => {
                     <p className="text-black">Login</p>
                   </li>
                   <li>
-                    <button className="btn btn-primary rounded-full w-[100px] text-white">
+                    <button
+                      className="btn btn-primary rounded-full w-[100px] text-white"
+                      onClick={() => router.push("/auth/signup")}
+                    >
                       Sign up
                     </button>
                   </li>

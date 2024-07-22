@@ -12,7 +12,7 @@ const customStyles = {
     ...provided,
     height: "3rem",
     display: "flex",
-    borderColor: "#3b82f6",
+    borderColor: "gray",
     borderWidth: "1px",
     borderRadius: "0.375rem",
     padding: "0 0.5rem",

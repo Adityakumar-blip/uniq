@@ -3,41 +3,14 @@ import Downvote from "@/components/Discussion/Downvote";
 import Share from "@/components/Discussion/Share";
 import Upvote from "@/components/Discussion/Upvote";
 import Image from "next/image";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
+import UseNavigateToRoute from "../../../utils/navigtion";
+import { useDispatch, useSelector } from "react-redux";
+import { GetAllDiscussions } from "@/Store/Reducers/ForumSlice";
 
 const Discussion = () => {
-  const discussions = [
-    {
-      title: "What is the best way to learn a new language?",
-      comments: "3.2k comments",
-      authorImg:
-        "https://images.unsplash.com/photo-1495385794356-15371f348c31?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzF8fG1vZGVsc3xlbnwwfHwwfHx8MA%3D%3D",
-    },
-    {
-      title: "How do you manage your time effectively?",
-      comments: "1.4k comments",
-      authorImg:
-        "https://images.unsplash.com/photo-1584969405346-5230ae2bc4fc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzV8fG1vZGVsc3xlbnwwfHwwfHx8MA%3D%3D",
-    },
-    {
-      title: "What are the best resources for learning to code?",
-      comments: "5.6k comments",
-      authorImg:
-        "https://images.unsplash.com/photo-1618375279997-351e32d80a02?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTIzfHxtb2RlbHN8ZW58MHx8MHx8fDA%3D",
-    },
-    {
-      title: "What is the most important skill for a leader?",
-      comments: "2.3k comments",
-      authorImg:
-        "https://images.unsplash.com/photo-1570215778416-399723c225d6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzR8fG1vZGVsc3xlbnwwfHwwfHx8MA%3D%3D",
-    },
-    {
-      title: "How do you stay motivated when working on a long-term project?",
-      comments: "4.1k comments",
-      authorImg:
-        "https://images.unsplash.com/photo-1569210538317-4d53f92a0e21?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODJ8fG1vZGVsc3xlbnwwfHwwfHx8MA%3D%3D",
-    },
-  ];
+  const NavigateToRoute = UseNavigateToRoute();
 
   const topics = [
     { title: "Productivity", discussions: "12.4k discussions" },
@@ -48,6 +21,14 @@ const Discussion = () => {
     { title: "Career Development", discussions: "13.6k discussions" },
   ];
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(GetAllDiscussions());
+  }, []);
+
+  const { discussions } = useSelector(({ ForumSlice }) => ForumSlice);
+
   return (
     <div className="min-h-screen bg-white text-black bg-gray-50 px-10 p-4">
       <div className="mb-10">
@@ -55,7 +36,10 @@ const Discussion = () => {
         <p className="text-lg mt-2 font-normal text-gray-500">
           Connect with best developers, ask questions discuss ideas
         </p>
-        <button className="btn btn-primary text-white mt-4">
+        <button
+          className="btn btn-primary text-white mt-4"
+          onClick={() => NavigateToRoute("/discussion/new")}
+        >
           New Discussion
         </button>
       </div>
@@ -64,14 +48,14 @@ const Discussion = () => {
         <div className="lg:w-2/3">
           <h1 className="text-2xl font-bold mb-4">Discussions</h1>
           <div className="space-y-4">
-            {discussions.map((item, index) => (
+            {discussions?.data?.map((item, index) => (
               <div
                 key={index}
                 className="flex items-center p-4 rounded-lg cursor-pointer hover:bg-gray-100 "
               >
                 <div className="mr-4 ">
                   <Image
-                    src={item?.authorImg}
+                    src={item?.author?.img}
                     width={100}
                     height={100}
                     alt="author"
@@ -80,11 +64,13 @@ const Discussion = () => {
                 </div>
                 <div className="flex-grow">
                   <h2 className="text-lg font-semibold">{item.title}</h2>
-                  <p className="text-gray-500">{item.comments}</p>
+                  <p className="text-gray-500">
+                    {item.comments.length > 0 && item?.comments?.length}
+                  </p>
                   <div className="mt-4 flex items-center gap-2">
-                    <Upvote />
-                    <Downvote />
-                    <Comment />
+                    <Upvote upvote={item?.upvotes} />
+                    <Downvote downvote={item?.downvotes} />
+                    <Comment comments={item?.comments} />
                     <Share />
                   </div>
                 </div>

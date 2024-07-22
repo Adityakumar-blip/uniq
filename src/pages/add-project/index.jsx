@@ -7,6 +7,11 @@ import { AddProject, GetAllCommon } from "@/Store/Reducers/ProjectSlice";
 import MultiSelectDropdown from "@/components/MultipleSelection";
 import projectSchema from "../../../utils/schema";
 import RandomImages from "../../../utils/Images";
+import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import "react-quill/dist/quill.snow.css";
 
 const initialValues = {
   name: "",
@@ -20,6 +25,7 @@ const initialValues = {
 
 const Index = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -83,7 +89,12 @@ const Index = () => {
         }
       }
       try {
-        dispatch(AddProject(formData));
+        dispatch(AddProject(formData)).then((result) => {
+          if (result.payload.status === 201) {
+            router.push("/projects");
+          }
+          console.log("project result", result);
+        });
       } catch (error) {
         console.log("Error in adding project", error);
       }
@@ -100,215 +111,266 @@ const Index = () => {
     dispatch(GetAllCommon("technologies"));
   }, []);
 
-  console.log("Formik values", formik.values);
-
   return (
-    <div className="p-10">
-      <div>
-        <p className="text-5xl text-black font-bold">Add New Project</p>
-        <p className="text-lg pt-2 text-gray-500">
-          Describe the project and find the right developer
-        </p>
-      </div>
-      <div className="mt-6">
-        <div className="flex items-center gap-[50px]">
-          <img
-            src={
-              selectedImage ||
-              "https://cdn.dribbble.com/userupload/14600121/file/original-f8dbf2e94ec02b742de211d1bde58544.jpg?resize=752x564"
-            }
-            alt="Selected"
-            className="h-[160px] w-[200px] object-cover rounded-lg"
-          />
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="hidden"
-            id="imageUpload"
-          />
-          {!selectedImage ? (
-            <div className="flex items-center gap-2">
-              <label
-                htmlFor="imageUpload"
-                className="btn btn-primary w-[10rem] text-white cursor-pointer"
-              >
-                Upload
-              </label>
-              <button
-                htmlFor="imageUpload"
-                className="btn  w-[10rem] text-white cursor-pointer"
-                onClick={() => getRandomImage()}
-              >
-                Choose Random
-              </button>
-            </div>
-          ) : (
-            <button
-              className="btn w-[10rem] text-white cursor-pointer"
-              onClick={() => handleRemoveImg()}
-            >
-              Remove
-            </button>
-          )}
-        </div>
-        <form>
-          <div className="grid gap-4 mt-4 md:grid-cols-2">
-            <div>
-              <div className="label">
-                <span className=" text-black text-lg font-semibold">
-                  Project Name
-                </span>
-              </div>
-              <InputWithLable
-                name="name"
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                errors={formik.errors.name}
-                touched={formik.touched.name}
-              />
-            </div>
-            <div className="dropdown-select">
-              <div className="label">
-                <span className=" text-black text-lg font-semibold">
-                  Technologies Requirement
-                </span>
-              </div>
-              <MultiSelectDropdown
-                options={technologies}
-                onChange={(data) => formik.setFieldValue("techstack", data)}
-                type="technology"
-              />
-              {/* {formik.errors.techstack && formik.touched.techstack && (
-                <div className="text-red-500 text-sm">
-                  {formik.errors.techstack}
-                </div>
-              )} */}
-            </div>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <div className="label">
-                <span className=" text-black text-lg font-semibold">
-                  Project Tags
-                </span>
-              </div>
-              <MultiSelectDropdown
-                options={tags}
-                onChange={(data) => formik.setFieldValue("tags", data)}
-                type="tags"
-              />
-              {/* {formik.errors.tags && formik.touched.tags && (
-                <div className="text-red-500 text-sm">{formik.errors.tags}</div>
-              )} */}
-            </div>
-            <div>
-              <div className="label">
-                <span className=" text-black text-lg font-semibold">
-                  Short Description
-                </span>
-              </div>
-              <InputWithLable
-                name="shortIntro"
-                value={formik.values.shortIntro}
-                onChange={formik.handleChange}
-                errors={formik.errors.shortIntro}
-                touched={formik.touched.shortIntro}
-              />
-            </div>
-          </div>
-          <div>
-            <div className="label">
-              <span className=" text-black text-lg font-semibold">
-                Github URL
-              </span>
-            </div>
-            <InputWithLable
-              name="githubUrl"
-              value={formik.values.githubUrl}
-              onChange={formik.handleChange}
-              errors={formik.errors.githubUrl}
-              touched={formik.touched.githubUrl}
-            />
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <div className="label">
-                <span className=" text-black text-lg font-semibold">
-                  Project Description
-                </span>
-              </div>
-              <textarea
-                id="description"
-                rows="4"
-                name="description"
-                value={formik.values.description}
-                onChange={formik.handleChange}
-                className={`block p-2.5 w-full ring-blue-500 text-sm text-gray-900 bg-gray-50 rounded-lg border ${
-                  formik.errors.description && formik.touched.description
-                    ? "border-red-500"
-                    : "border-blue-300"
-                } focus:ring-blue-500 focus:border-blue-500`}
-                placeholder="Write your thoughts here..."
-              ></textarea>
-              {formik.errors.description && formik.touched.description && (
-                <div className="text-red-500 text-sm">
-                  {formik.errors.description}
-                </div>
-              )}
-            </div>
-            <div>
-              <div className="label">
-                <span className=" text-black text-lg font-semibold">
-                  Special Requirements
-                </span>
-              </div>
-              <textarea
-                id="specialRequirements"
-                name="specialRequirements"
-                rows="4"
-                className={`block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border ${
-                  formik.errors.specialRequirements &&
-                  formik.touched.specialRequirements
-                    ? "border-red-500"
-                    : "border-gray-300"
-                } focus:ring-blue-500 focus:border-blue-500`}
-                placeholder="Write your thoughts here..."
-              ></textarea>
-              {formik.errors.specialRequirements &&
-                formik.touched.specialRequirements && (
-                  <div className="text-red-500 text-sm">
-                    {formik.errors.specialRequirements}
+    <div className=" bg-gray-100 py-12 px-4 sm:px-6 lg:px-8 ">
+      <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md overflow-scroll ">
+        <div className="px-6 py-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Add New Project
+          </h1>
+          <p className="text-lg text-gray-600 mb-8">
+            Describe the project and find the right developer
+          </p>
+
+          <form onSubmit={formik.handleSubmit} className="space-y-6">
+            <div className="flex items-center justify-center bg-gray-50 rounded-lg p-6">
+              <div className="text-center">
+                {selectedImage ? (
+                  <img
+                    src={selectedImage}
+                    alt="Selected"
+                    className="h-40 w-40 object-cover rounded-lg mx-auto mb-4"
+                  />
+                ) : (
+                  <div className="h-40 w-40 bg-gray-200 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <svg
+                      className="h-12 w-12 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
+                    </svg>
                   </div>
                 )}
-            </div>
-          </div>
-
-          <div
-            className="mt-6 flex gap-[1px] cursor-pointer"
-            onClick={formik.handleSubmit}
-          >
-            <div className="bg-blue-500  w-[8rem] h-[3rem] flex items-center justify-center">
-              <p className="font-semibold">Add Project</p>
-            </div>
-            <div className="bg-blue-500 w-[3rem] h-[3rem] flex items-center justify-center">
-              <svg
-                clip-rule="evenodd"
-                fill-rule="evenodd"
-                stroke-linejoin="round"
-                stroke-miterlimit="2"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-[20px] rotate-[-45deg] invert"
-              >
-                <path
-                  d="m14.523 18.787s4.501-4.505 6.255-6.26c.146-.146.219-.338.219-.53s-.073-.383-.219-.53c-1.753-1.754-6.255-6.258-6.255-6.258-.144-.145-.334-.217-.524-.217-.193 0-.385.074-.532.221-.293.292-.295.766-.004 1.056l4.978 4.978h-14.692c-.414 0-.75.336-.75.75s.336.75.75.75h14.692l-4.979 4.979c-.289.289-.286.762.006 1.054.148.148.341.222.533.222.19 0 .378-.072.522-.215z"
-                  fill-rule="nonzero"
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                  id="imageUpload"
                 />
-              </svg>
+                <div className="flex justify-center space-x-4">
+                  <label
+                    htmlFor="imageUpload"
+                    className="btn btn-primary text-white cursor-pointer px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-blue-600"
+                  >
+                    Upload
+                  </label>
+                  <button
+                    type="button"
+                    className="btn text-white cursor-pointer px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-gray-700"
+                    onClick={getRandomImage}
+                  >
+                    Choose Random
+                  </button>
+                  {selectedImage && (
+                    <button
+                      type="button"
+                      className="btn text-white cursor-pointer px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-red-600"
+                      onClick={handleRemoveImg}
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        </form>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Project Name
+                </label>
+                <InputWithLable
+                  name="name"
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  errors={formik.errors.name}
+                  touched={formik.touched.name}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="techstack"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Technologies Requirement
+                </label>
+                <MultiSelectDropdown
+                  options={technologies}
+                  onChange={(data) => formik.setFieldValue("techstack", data)}
+                  type="technology"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <div>
+                <label
+                  htmlFor="tags"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Project Tags
+                </label>
+                <MultiSelectDropdown
+                  options={tags}
+                  onChange={(data) => formik.setFieldValue("tags", data)}
+                  type="tags"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="shortIntro"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Short Description
+                </label>
+                <InputWithLable
+                  name="shortIntro"
+                  value={formik.values.shortIntro}
+                  onChange={formik.handleChange}
+                  errors={formik.errors.shortIntro}
+                  touched={formik.touched.shortIntro}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="githubUrl"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Github URL
+              </label>
+              <InputWithLable
+                name="githubUrl"
+                value={formik.values.githubUrl}
+                onChange={formik.handleChange}
+                errors={formik.errors.githubUrl}
+                touched={formik.touched.githubUrl}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* <div className="grid grid-cols-1 gap-6 md:grid-cols-2"> */}
+            {/* Project Description */}
+            <div className="mb-8 h-60">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Project Description
+              </label>
+              <div className="mb-4 h-40">
+                <ReactQuill
+                  theme="snow"
+                  value={formik.values.description}
+                  style={{ height: "100%" }}
+                  onChange={(content) =>
+                    formik.setFieldValue("description", content)
+                  }
+                  modules={{
+                    toolbar: [
+                      [{ header: "1" }, { header: "2" }, { font: [] }],
+                      [{ size: [] }],
+                      ["bold", "italic", "underline", "strike", "blockquote"],
+                      [
+                        { list: "ordered" },
+                        { list: "bullet" },
+                        { indent: "-1" },
+                        { indent: "+1" },
+                      ],
+                      ["link", "image"],
+                      ["clean"],
+                    ],
+                  }}
+                />
+              </div>
+              {formik.errors.description && formik.touched.description && (
+                <p className="mt-2 text-sm text-red-600">
+                  {formik.errors.description}
+                </p>
+              )}
+            </div>
+
+            {/* Special Requirements */}
+            <div className="mb-8">
+              <label
+                htmlFor="specialRequirements"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Special Requirements
+              </label>
+              <div className="mb-4 h-40">
+                <ReactQuill
+                  theme="snow"
+                  value={formik.values.specialRequirements}
+                  onChange={(content) =>
+                    formik.setFieldValue("specialRequirements", content)
+                  }
+                  style={{ height: "100%" }}
+                  modules={{
+                    toolbar: [
+                      [{ header: "1" }, { header: "2" }, { font: [] }],
+                      [{ size: [] }],
+                      ["bold", "italic", "underline", "strike", "blockquote"],
+                      [
+                        { list: "ordered" },
+                        { list: "bullet" },
+                        { indent: "-1" },
+                        { indent: "+1" },
+                      ],
+                      ["link", "image"],
+                      ["clean"],
+                    ],
+                  }}
+                />
+              </div>
+              {formik.errors.specialRequirements &&
+                formik.touched.specialRequirements && (
+                  <p className="mt-2 text-sm text-red-600">
+                    {formik.errors.specialRequirements}
+                  </p>
+                )}
+            </div>
+            {/* </div> */}
+
+            <div className="flex justify-end ">
+              <button
+                type="submit"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Add Project
+                <svg
+                  className="ml-2 -mr-1 h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

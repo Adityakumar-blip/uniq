@@ -34,7 +34,6 @@ const Index = () => {
     );
   }, [dispatch, value]);
 
-  console.log("Projects", projects);
   return (
     <div className="bg-white p-4 px-4 lg:px-16 md:px-16 h-screen">
       <p className="text-5xl font-bold text-black">Explore Projects</p>

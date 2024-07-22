@@ -17,3 +17,9 @@ export const ContributeApi = (data) =>
 export const AddCommonApi = (data) => POST(`${BASE_URL}common/addCommon`, data);
 export const GetAllCommonApi = (data) =>
   GET(`${BASE_URL}common/getAllCommon?type=${data}`);
+
+// discussion APIs
+export const AddDiscussionAPI = (data) =>
+  POST(`${BASE_URL}forum/addDiscussion`, data);
+export const GetDiscussionsAPI = (data) =>
+  GET(`${BASE_URL}forum/getAllDiscussion`);

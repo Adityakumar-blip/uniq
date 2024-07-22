@@ -1,8 +1,9 @@
 import axios from "axios";
+import toast from "react-hot-toast";
 
 // https://uniq-backend.onrender.com/api/
 export const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000/api/";
+  process.env.NEXT_PUBLIC_BASE_URL || "https://uniq-backend.onrender.com/api/";
 
 export const imgUrl = "";
 
@@ -29,7 +30,7 @@ export const POST = async (url, data) => {
             localStorage.clear();
             window.location.href = "/auth/signin";
           }
-          console.log("result", result);
+          toast.success(result.data.message);
           throw result;
         } else {
           return result;

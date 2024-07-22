@@ -11,18 +11,19 @@ const ProfileModal = ({ isOpen, closeModal, id }) => {
     initialValues: { img: "" },
     onSubmit: (values) => {
       try {
+        const _id = localStorage.getItem("userId");
         const formData = new FormData();
         for (const key in values) {
           formData.append(key, values[key]);
         }
-        if (id) {
+        if (_id) {
           formData.append("_id", id);
         }
         dispatch(UpdateUser(formData)).then((result) => {
           console.log("Result", result.payload);
           localStorage.setItem(
             "user",
-            JSON.stringify(result.payload.data.data)
+            JSON.stringify(result?.payload?.data?.data)
           );
           //   router.push("/projects");
         });

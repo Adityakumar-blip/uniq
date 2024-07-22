@@ -6,7 +6,7 @@ import {
   GetAllCommonApi,
   GetAllProjectsApi,
   GetProjectByIdApi,
-} from "../Services/Service";
+} from "../ServicesFile/Service";
 import { setLoading } from "./CommonSlice";
 
 const initialState = {
@@ -20,9 +20,9 @@ export const AddProject = createAsyncThunk(
   "AddProject",
   async (values, { dispatch }) => {
     try {
-      // dispatch(setLoading(true));
+      dispatch(setLoading(true));
       const result = await AddProjectApi(values);
-      //   dispatch(setLoading(false));
+      dispatch(setLoading(false));
       if (result) {
         return result;
       } else {
@@ -31,6 +31,7 @@ export const AddProject = createAsyncThunk(
     } catch (error) {
       const errorMessage = error?.message || "An error occurred.";
       //   dispatch(setMessage({ text: errorMessage, type: AlertEnum.Error }));
+      dispatch(setLoading(false));
       throw error;
     }
   }
@@ -59,9 +60,9 @@ export const GetProjectById = createAsyncThunk(
   "GetProjectById",
   async (values, { dispatch }) => {
     try {
-      // dispatch(setLoading(true));
+      dispatch(setLoading(true));
       const result = await GetProjectByIdApi(values);
-      //   dispatch(setLoading(false));
+      dispatch(setLoading(false));
       if (result) {
         return result;
       } else {
@@ -69,6 +70,7 @@ export const GetProjectById = createAsyncThunk(
       }
     } catch (error) {
       const errorMessage = error?.message || "An error occurred.";
+      dispatch(setLoading(false));
       //   dispatch(setMessage({ text: errorMessage, type: AlertEnum.Error }));
       throw error;
     }

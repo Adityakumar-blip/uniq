@@ -43,7 +43,7 @@ const index = () => {
           console.log("Result", result.payload);
           localStorage.setItem(
             "user",
-            JSON.stringify(result.payload.data.data)
+            JSON.stringify(result?.payload?.data?.data || "")
           );
           router.push("/projects");
         });

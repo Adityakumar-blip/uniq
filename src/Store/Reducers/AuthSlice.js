@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { LoginApi, SignupApi, UpdateUserApi } from "../Services/Service";
+import { LoginApi, SignupApi, UpdateUserApi } from "../ServicesFile/Service";
 import { setLoading } from "./CommonSlice";
 
 const initialState = {

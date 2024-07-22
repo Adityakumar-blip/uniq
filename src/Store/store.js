@@ -1,11 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import ProjectSlice from "./Reducers/ProjectSlice";
 import CommonSlice from "./Reducers/CommonSlice";
+import ForumSlice from "./Reducers/ForumSlice";
 
 export const store = configureStore({
   reducer: {
     ProjectSlice: ProjectSlice,
     CommonSlice: CommonSlice,
+    ForumSlice: ForumSlice,
+    // AuthSlice: AuthSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

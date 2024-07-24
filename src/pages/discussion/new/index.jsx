@@ -1,54 +1,75 @@
+import Dropdown from "@/components/Design/Dropdown";
 import InputField from "@/components/Design/InputField";
 import TextArea from "@/components/Design/TextArea";
 import MultiSelectDropdown from "@/components/MultipleSelection";
-import React, { useState } from "react";
+import {
+  AddDiscussion,
+  GetAllDiscussionCategory,
+} from "@/Store/Reducers/ForumSlice";
+import { useFormik } from "formik";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+const initialValues = {
+  title: "",
+  description: "",
+  category: {},
+};
 
 const NewDiscussionForm = () => {
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-  const [category, setCategory] = useState("");
+  const dispatch = useDispatch();
+  const { categories } = useSelector(({ ForumSlice }) => ForumSlice);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newDiscussion = {
-      title,
-      body,
-      category,
-      date: new Date().toISOString(),
-    };
-    console.log("New Discussion:", newDiscussion);
-    // Here you can add your code to send `newDiscussion` to your backend or state management
-  };
+  useEffect(() => {
+    dispatch(GetAllDiscussionCategory());
+  }, []);
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    onSubmit: (values) => {
+      dispatch(AddDiscussion(values));
+    },
+  });
+
+  const options = categories.map((item) => ({
+    value: item._id,
+    label: item.title,
+  }));
 
   return (
     <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6">
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
         Create New Discussion
       </h2>
-      <form onSubmit={handleSubmit}>
+      <div>
         <InputField
           label="Title"
           type="text"
-          onChange={(e) => console.log(e.target.value)}
-          name="Title"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          name="title"
         />
         <TextArea
           label="Body"
-          onChange={(e) => console.log(e.target.value)}
+          onChange={(e) => formik.setFieldValue("description", e.target.value)}
           placeholder="Type your message.."
         />
         <div className="mb-4">
-          <MultiSelectDropdown options={[]} />
+          <Dropdown
+            options={options}
+            onChange={(e) => formik.setFieldValue("category", e)}
+            value={formik?.values?.category}
+          />
         </div>
         <div className="text-center">
           <button
-            type="submit"
+            onClick={() => formik.handleSubmit()}
             className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
           >
             Create Discussion
           </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

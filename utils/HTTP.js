@@ -78,6 +78,7 @@ export const GET = async (url, data) => {
       maxBodyLength: Infinity,
       headers: {
         // "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       // cache: "force-cache",
     };

@@ -11,20 +11,23 @@ const ProfileModal = ({ isOpen, closeModal, id }) => {
     initialValues: { img: "" },
     onSubmit: (values) => {
       try {
-        const _id = localStorage.getItem("userId");
+        const user = JSON.parse(localStorage.getItem("user"));
+        console.log("user", user);
         const formData = new FormData();
         for (const key in values) {
           formData.append(key, values[key]);
         }
-        if (_id) {
-          formData.append("_id", id);
+        if (user) {
+          formData.append("_id", user?._id);
         }
         dispatch(UpdateUser(formData)).then((result) => {
-          console.log("Result", result.payload);
-          localStorage.setItem(
-            "user",
-            JSON.stringify(result?.payload?.data?.data)
-          );
+          console.log("Result", result.payload.response);
+          if (result?.payload?.status === 200) {
+            localStorage.setItem(
+              "user",
+              JSON.stringify(result?.payload?.data?.data)
+            );
+          }
           //   router.push("/projects");
         });
       } catch (error) {

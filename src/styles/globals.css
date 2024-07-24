@@ -58,3 +58,11 @@ body {
   object-fit: cover;
   background-repeat: no-repeat;
 } */
+
+/* editor height */
+.ql-editor {
+  height: 200px !important;
+  max-height: 250px !important;
+  overflow: auto !important;
+  color: black;
+}

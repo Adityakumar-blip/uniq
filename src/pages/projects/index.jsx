@@ -28,7 +28,6 @@ const Index = () => {
   useEffect(() => {
     dispatch(GetAllProject({ search: value ? value : "", page, take })).then(
       (result) => {
-        console.log(result);
         setProjects(result?.payload?.projects);
       }
     );

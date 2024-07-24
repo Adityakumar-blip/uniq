@@ -267,18 +267,17 @@ const Index = () => {
 
             {/* <div className="grid grid-cols-1 gap-6 md:grid-cols-2"> */}
             {/* Project Description */}
-            <div className="mb-8 h-60">
+            <div className="mb-8 ">
               <label
                 htmlFor="description"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Project Description
               </label>
-              <div className="mb-4 h-40">
+              <div className="mb-4 ">
                 <ReactQuill
                   theme="snow"
                   value={formik.values.description}
-                  style={{ height: "100%" }}
                   onChange={(content) =>
                     formik.setFieldValue("description", content)
                   }
@@ -314,14 +313,13 @@ const Index = () => {
               >
                 Special Requirements
               </label>
-              <div className="mb-4 h-40">
+              <div className="mb-4 ">
                 <ReactQuill
                   theme="snow"
                   value={formik.values.specialRequirements}
                   onChange={(content) =>
                     formik.setFieldValue("specialRequirements", content)
                   }
-                  style={{ height: "100%" }}
                   modules={{
                     toolbar: [
                       [{ header: "1" }, { header: "2" }, { font: [] }],

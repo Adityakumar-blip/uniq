@@ -24,7 +24,11 @@ const profile = () => {
     if (typeof window !== "undefined") {
       const user = localStorage.getItem("user");
       if (user) {
-        setUserInfo(JSON.parse(user));
+        try {
+          setUserInfo(JSON.parse(user));
+        } catch (e) {
+          console.error("Failed to parse user info from localStorage:", e);
+        }
       }
     }
   }, []);

@@ -30,7 +30,7 @@ const Discussion = () => {
   const { discussions } = useSelector(({ ForumSlice }) => ForumSlice);
 
   return (
-    <div className="min-h-screen bg-white text-black bg-gray-50 px-10 p-4">
+    <div className="min-h-screen bg-white text-black  px-10 p-4">
       <div className="mb-10">
         <p className="text-4xl font-bold ">Welcome to second family</p>
         <p className="text-lg mt-2 font-normal text-gray-500">
@@ -48,7 +48,7 @@ const Discussion = () => {
         <div className="lg:w-2/3">
           <h1 className="text-2xl font-bold mb-4">Discussions</h1>
           <div className="space-y-4">
-            {discussions?.data?.map((item, index) => (
+            {discussions?.map((item, index) => (
               <div
                 key={index}
                 className="flex items-center p-4 rounded-lg cursor-pointer hover:bg-gray-100 "

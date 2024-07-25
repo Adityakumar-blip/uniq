@@ -22,12 +22,20 @@ const Discussion = () => {
   ];
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     dispatch(GetAllDiscussions());
   }, []);
 
   const { discussions } = useSelector(({ ForumSlice }) => ForumSlice);
+
+  const handleOpenDiscussion = (id) => {
+    router.push({
+      pathname: "/discussion/details",
+      query: { forumId: id },
+    });
+  };
 
   return (
     <div className="min-h-screen bg-white text-black  px-10 p-4">
@@ -52,6 +60,7 @@ const Discussion = () => {
               <div
                 key={index}
                 className="flex items-center p-4 rounded-lg cursor-pointer hover:bg-gray-100 "
+                onClick={() => handleOpenDiscussion(item?._id)}
               >
                 <div className="mr-4 ">
                   <Image
@@ -65,7 +74,8 @@ const Discussion = () => {
                 <div className="flex-grow">
                   <h2 className="text-lg font-semibold">{item.title}</h2>
                   <p className="text-gray-500">
-                    {item.comments.length > 0 && item?.comments?.length}
+                    {item.comments.length > 0 &&
+                      `${item?.comments?.length} comments`}{" "}
                   </p>
                   <div className="mt-4 flex items-center gap-2">
                     <Upvote upvote={item?.upvotes} />

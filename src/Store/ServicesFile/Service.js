@@ -27,3 +27,9 @@ export const GetAllForumCategoryAPI = (data) =>
   GET(`${BASE_URL}forum/getAllCategory`, data);
 export const GetDiscussionsAPI = (data) =>
   GET(`${BASE_URL}forum/getAllDiscussion`);
+export const GetDiscussionByIdAPI = (data) =>
+  GET(`${BASE_URL}forum/getDiscussionById?forumId=${data}`);
+export const GetCommentsByForumAPI = (data) =>
+  GET(`${BASE_URL}forum/getCommentsByForum?forumId=${data}`);
+export const GetRepliesByCommentAPI = (data) =>
+  GET(`${BASE_URL}forum/getRepliesById?commentId=${data}`);

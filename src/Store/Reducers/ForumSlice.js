@@ -2,13 +2,19 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   AddDiscussionAPI,
   GetAllForumCategoryAPI,
+  GetCommentsByForumAPI,
+  GetDiscussionByIdAPI,
   GetDiscussionsAPI,
+  GetRepliesByCommentAPI,
 } from "../ServicesFile/Service.js";
 import { setLoading } from "./CommonSlice.js";
 
 const initialState = {
   discussions: [],
   categories: [],
+  discussion: {},
+  comments: [],
+  replies: [],
 };
 
 export const AddDiscussion = createAsyncThunk(
@@ -91,6 +97,66 @@ export const GetAllDiscussionCategory = createAsyncThunk(
   }
 );
 
+export const GetForumById = createAsyncThunk(
+  "GetForumById",
+  async (values, { dispatch }) => {
+    try {
+      dispatch(setLoading(true));
+      const result = await GetDiscussionByIdAPI(values);
+      dispatch(setLoading(false));
+      if (result) {
+        return result;
+      } else {
+        throw result;
+      }
+    } catch (error) {
+      const errorMessage = error?.message || "An error occurred.";
+      //   dispatch(setMessage({ text: errorMessage, type: AlertEnum.Error }));
+      throw error;
+    }
+  }
+);
+
+export const GetCommentsByForum = createAsyncThunk(
+  "GetCommentsByForum",
+  async (values, { dispatch }) => {
+    try {
+      dispatch(setLoading(true));
+      const result = await GetCommentsByForumAPI(values);
+      dispatch(setLoading(false));
+      if (result) {
+        return result;
+      } else {
+        throw result;
+      }
+    } catch (error) {
+      const errorMessage = error?.message || "An error occurred.";
+      //   dispatch(setMessage({ text: errorMessage, type: AlertEnum.Error }));
+      throw error;
+    }
+  }
+);
+
+export const GetRepliesByComment = createAsyncThunk(
+  "GetRepliesByComment",
+  async (values, { dispatch }) => {
+    try {
+      dispatch(setLoading(true));
+      const result = await GetRepliesByCommentAPI(values);
+      dispatch(setLoading(false));
+      if (result) {
+        return { ...result, parentId: values };
+      } else {
+        throw result;
+      }
+    } catch (error) {
+      const errorMessage = error?.message || "An error occurred.";
+      //   dispatch(setMessage({ text: errorMessage, type: AlertEnum.Error }));
+      throw error;
+    }
+  }
+);
+
 export const ProjectSlice = createSlice({
   name: "ProjectSlice",
   initialState,
@@ -102,6 +168,19 @@ export const ProjectSlice = createSlice({
     });
     builder.addCase(GetAllDiscussionCategory.fulfilled, (state, action) => {
       state.categories = action.payload.data;
+    });
+    builder.addCase(GetForumById.fulfilled, (state, action) => {
+      state.discussion = action.payload.data;
+    });
+    builder.addCase(GetCommentsByForum.fulfilled, (state, action) => {
+      state.comments = action.payload.data;
+    });
+    builder.addCase(GetRepliesByComment.fulfilled, (state, action) => {
+      state.replies = {
+        ...state.replies,
+        [action.payload.parentId]: action.payload.data,
+      };
+      // state.replies = action.payload.data;
     });
   },
 });

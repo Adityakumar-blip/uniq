@@ -6,6 +6,7 @@ import {
   GetRepliesByComment,
 } from "@/Store/Reducers/ForumSlice";
 import { formatDate } from "../../../../utils/Functions";
+import { TbSend2 } from "react-icons/tb";
 
 const Comment = ({
   comment,
@@ -14,9 +15,17 @@ const Comment = ({
   toggleReplies,
 }) => {
   const dispatch = useDispatch();
-  const [isReplying, setIsReply] = useState(false);
+  const [isReplying, setIsReplying] = useState(false);
+  const [replyText, setReplyText] = useState("");
 
   const { replies } = useSelector(({ ForumSlice }) => ForumSlice);
+
+  const handleReplySubmit = (e) => {
+    e.preventDefault();
+    console.log("Submitting reply:", replyText);
+    setIsReplying(false);
+    setReplyText("");
+  };
 
   return (
     <motion.div
@@ -67,8 +76,9 @@ const Comment = ({
           className="text-blue-500 hover:text-blue-600 transition-colors duration-200"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          onClick={() => setIsReplying(!isReplying)}
         >
-          Reply
+          {isReplying ? "Cancel" : "Reply"}
         </motion.button>
         {comment?.replies?.length > 0 && (
           <motion.button
@@ -83,6 +93,77 @@ const Comment = ({
           </motion.button>
         )}
       </div>
+      <AnimatePresence>
+        {isReplying && (
+          <motion.form
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            onSubmit={handleReplySubmit}
+            className="mt-4"
+          >
+            <div className="flex flex-col bg-gray-100 rounded-lg p-2">
+              <textarea
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+                placeholder="Write your message.."
+                className="flex-grow bg-transparent text-black text-sm placeholder-primary focus:outline-none h-[100px] resize-none pt-1"
+              />
+              <div className="flex justify-between space-x-2 text-gray-400">
+                <div>
+                  <button type="button" className="hover:text-gray-600">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                  <button type="button" className="hover:text-gray-600">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <button
+                  type="submit"
+                  className="text-gray-600 hover:text-gray-800"
+                >
+                  {/* <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg> */}
+                  <TbSend2 className="text-primary" size="20px" />
+                </button>
+              </div>
+            </div>
+          </motion.form>
+        )}
+      </AnimatePresence>
       <AnimatePresence>
         {expandedComments?.[comment._id] && (
           <motion.div

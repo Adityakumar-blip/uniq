@@ -7,10 +7,14 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import UseNavigateToRoute from "../../../utils/navigtion";
 import { useDispatch, useSelector } from "react-redux";
-import { GetAllDiscussions } from "@/Store/Reducers/ForumSlice";
+import {
+  GetAllDiscussionCategory,
+  GetAllDiscussions,
+} from "@/Store/Reducers/ForumSlice";
 
 const Discussion = () => {
   const NavigateToRoute = UseNavigateToRoute();
+  const { categories } = useSelector(({ ForumSlice }) => ForumSlice);
 
   const topics = [
     { title: "Productivity", discussions: "12.4k discussions" },
@@ -26,6 +30,7 @@ const Discussion = () => {
 
   useEffect(() => {
     dispatch(GetAllDiscussions());
+    dispatch(GetAllDiscussionCategory());
   }, []);
 
   const { discussions } = useSelector(({ ForumSlice }) => ForumSlice);
@@ -80,7 +85,7 @@ const Discussion = () => {
                   <div className="mt-4 flex items-center gap-2">
                     <Upvote upvote={item?.upvotes} />
                     <Downvote downvote={item?.downvotes} />
-                    <Comment comments={item?.comments} />
+                    {/* <Comment comments={item?.comments} /> */}
                     <Share />
                   </div>
                 </div>
@@ -93,29 +98,22 @@ const Discussion = () => {
         <div className="lg:w-1/3 mt-8 lg:mt-0">
           <h1 className="text-2xl font-bold mb-4">Trending Topics</h1>
           <div className="space-y-4">
-            {topics.map((item, index) => (
-              <div key={index} className="flex items-center  p-4 rounded-lg ">
-                <div className="mr-4">
-                  <button className="text-gray-600 hover:text-gray-800 focus:outline-none">
-                    <svg
-                      className="w-6 h-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M3 12h18M3 12l6-6m-6 6l6 6"
-                      ></path>
-                    </svg>
+            {categories.map((item, index) => (
+              <div
+                key={index}
+                className="flex items-center  p-4 rounded-lg hover:cursor-pointer"
+              >
+                <div className="mr-4 bg-indigo-100 p-4 flex items-center justify-center rounded-md w-[50px] h-[50px]">
+                  <button className="text-gray-600  hover:text-gray-800 focus:outline-none ">
+                    <h6 className="font-bold">{item?.title.charAt(0)}</h6>
                   </button>
                 </div>
                 <div className="flex-grow">
-                  <h2 className="text-lg font-semibold">{item.title}</h2>
-                  <p className="text-gray-500">{item.discussions}</p>
+                  <h2 className="text-lg font-semibold">{item?.title}</h2>
+                  <p className="text-gray-500">
+                    {item?.discussions > 0 &&
+                      `${item?.discussions} Discussions`}
+                  </p>
                 </div>
               </div>
             ))}

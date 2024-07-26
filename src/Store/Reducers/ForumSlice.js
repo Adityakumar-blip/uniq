@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
+  AddCommentAPI,
   AddDiscussionAPI,
   GetAllForumCategoryAPI,
   GetCommentsByForumAPI,
@@ -43,6 +44,27 @@ export const AddCategory = createAsyncThunk(
     try {
       dispatch(setLoading(true));
       const result = await AddForumCategoryAPI(values);
+      dispatch(setLoading(false));
+      if (result) {
+        return result;
+      } else {
+        throw result;
+      }
+    } catch (error) {
+      const errorMessage = error?.message || "An error occurred.";
+      //   dispatch(setMessage({ text: errorMessage, type: AlertEnum.Error }));
+      dispatch(setLoading(false));
+      throw error;
+    }
+  }
+);
+
+export const AddComment = createAsyncThunk(
+  "AddComment",
+  async (values, { dispatch }) => {
+    try {
+      dispatch(setLoading(true));
+      const result = await AddCommentAPI(values);
       dispatch(setLoading(false));
       if (result) {
         return result;

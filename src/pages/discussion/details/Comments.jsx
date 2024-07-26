@@ -6,13 +6,26 @@ import {
   GetRepliesByComment,
 } from "@/Store/Reducers/ForumSlice";
 import { formatDate } from "../../../../utils/Functions";
-import { TbSend2 } from "react-icons/tb";
+import { TbSend2, TbFile3D } from "react-icons/tb";
+
+const borderColors = [
+  "border-blue-200",
+  "border-purple-200",
+  "border-green-200",
+  "border-red-200",
+  "border-yellow-200",
+  "border-indigo-200",
+  "border-pink-200",
+];
 
 const Comment = ({
   comment,
   isReply = false,
   expandedComments,
   toggleReplies,
+  handleAddComment,
+  formik,
+  depth = 0,
 }) => {
   const dispatch = useDispatch();
   const [isReplying, setIsReplying] = useState(false);
@@ -27,10 +40,20 @@ const Comment = ({
     setReplyText("");
   };
 
+  const handleReply = (commentId) => {
+    formik.setFieldValue("commentId", commentId);
+    formik.setFieldValue("isReplied", true);
+    setIsReplying(!isReplying);
+  };
+
+  const getBorderColor = (depth) => {
+    return borderColors[depth % borderColors.length];
+  };
+
   return (
     <motion.div
       className={`bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 ${
-        isReply ? "ml-8 mt-4 border-l-4 border-blue-200" : ""
+        isReply ? `ml-8 mt-4 border-l-4 ${getBorderColor(depth)}` : ""
       }`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -76,7 +99,7 @@ const Comment = ({
           className="text-blue-500 hover:text-blue-600 transition-colors duration-200"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => setIsReplying(!isReplying)}
+          onClick={() => handleReply(comment?._id)}
         >
           {isReplying ? "Cancel" : "Reply"}
         </motion.button>
@@ -105,8 +128,8 @@ const Comment = ({
           >
             <div className="flex flex-col bg-gray-100 rounded-lg p-2">
               <textarea
-                value={replyText}
-                onChange={(e) => setReplyText(e.target.value)}
+                value={formik?.values?.text}
+                onChange={(e) => formik.setFieldValue("text", e.target.value)}
                 placeholder="Write your message.."
                 className="flex-grow bg-transparent text-black text-sm placeholder-primary focus:outline-none h-[100px] resize-none pt-1"
               />
@@ -142,21 +165,9 @@ const Comment = ({
                   </button>
                 </div>
                 <button
-                  type="submit"
+                  onClick={() => formik.handleSubmit()}
                   className="text-gray-600 hover:text-gray-800"
                 >
-                  {/* <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg> */}
                   <TbSend2 className="text-primary" size="20px" />
                 </button>
               </div>
@@ -179,6 +190,9 @@ const Comment = ({
                 isReply={true}
                 toggleReplies={toggleReplies}
                 expandedComments={expandedComments}
+                depth={depth + 1}
+                formik={formik}
+                handleAddComment={handleAddComment}
               />
             ))}
           </motion.div>

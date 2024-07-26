@@ -3,8 +3,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import Comment from "./Comments";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { GetCommentsByForum, GetForumById, GetRepliesByComment } from "@/Store/Reducers/ForumSlice";
+import {
+  AddComment,
+  GetCommentsByForum,
+  GetForumById,
+  GetRepliesByComment,
+} from "@/Store/Reducers/ForumSlice";
 import TextArea from "@/components/Design/TextArea";
+import { useFormik } from "formik";
 
 const DiscussionDetails = () => {
   const router = useRouter();
@@ -15,51 +21,6 @@ const DiscussionDetails = () => {
 
   const [comments, setComments] = useState([]);
 
-  // const discussion = {
-  //   title: "Can audio storytelling transform the way we travel?",
-  //   summary:
-  //     "Exploring the potential of audio guides and storytelling to enhance travel experiences and create immersive journeys. This innovative approach could revolutionize how we connect with new places and cultures.",
-  //   comments: [
-  //     {
-  //       id: 1,
-  //       userAvatar: "https://i.pravatar.cc/150?img=1",
-  //       userName: "TravelEnthusiast",
-  //       timestamp: "2 hours ago",
-  //       content:
-  //         "I've used audio guides in museums and they really do make a difference. I'd love to see this concept expanded to entire cities or regions!",
-  //       replies: [
-  //         {
-  //           id: 2,
-  //           userAvatar: "https://i.pravatar.cc/150?img=2",
-  //           userName: "HistoryBuff",
-  //           timestamp: "1 hour ago",
-  //           content:
-  //             "Absolutely! Audio storytelling could be a game-changer for historical sites. Imagine walking through ancient ruins while listening to vivid descriptions of what life was like thousands of years ago.",
-  //           replies: [
-  //             {
-  //               id: 4,
-  //               userAvatar: "https://i.pravatar.cc/150?img=2",
-  //               userName: "AdityaKumar",
-  //               timestamp: "1 hour ago",
-  //               content:
-  //                 "Absolutely! Audio storytelling could be a game-changer for historical sites. Imagine walking through ancient ruins while listening to vivid descriptions of what life was like thousands of years ago.",
-  //             },
-  //           ],
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       id: 3,
-  //       userAvatar: "https://i.pravatar.cc/150?img=3",
-  //       userName: "TechNomad",
-  //       timestamp: "3 days ago",
-  //       content:
-  //         "We should integrate AR with audio storytelling. Picture holding up your phone to see historical figures or events overlaid on the current landscape while listening to the narrative. That would be truly immersive!",
-  //       replies: [],
-  //     },
-  //   ],
-  // };
-  // Sample user data
   const user = {
     avatar: "https://i.pravatar.cc/300?img=12",
     name: "AudioExplorer",
@@ -71,6 +32,7 @@ const DiscussionDetails = () => {
 
   useEffect(() => {
     if (forumId) {
+      formik.setFieldValue("forumId", forumId);
       dispatch(GetForumById(forumId));
       dispatch(GetCommentsByForum(forumId)).then((results) => {
         setComments(results.payload?.data);
@@ -86,6 +48,17 @@ const DiscussionDetails = () => {
       [commentId]: !prev[commentId],
     }));
     dispatch(GetRepliesByComment(commentId));
+  };
+
+  const formik = useFormik({
+    initialValues: { text: "", forumId: "", commentId: "", isReplied: false },
+    onSubmit: (values) => {
+      handleAddComment(values);
+    },
+  });
+
+  const handleAddComment = (values) => {
+    dispatch(AddComment(values));
   };
 
   return (
@@ -111,11 +84,17 @@ const DiscussionDetails = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <TextArea />
+          <TextArea
+            label="Comment"
+            name="text"
+            onChange={(e) => formik.setFieldValue("text", e.target.value)}
+            placeholder="Add your views here"
+          />
           <motion.button
             className="mt-4 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => formik.handleSubmit()}
           >
             Post Comment
           </motion.button>
@@ -132,6 +111,8 @@ const DiscussionDetails = () => {
                   comment={comment}
                   expandedComments={expandedComments}
                   toggleReplies={toggleReplies}
+                  handleAddComment={handleAddComment}
+                  formik={formik}
                 />
               ))}
         </div>

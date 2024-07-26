@@ -11,13 +11,11 @@ const RootLayout = ({ children, router }) => {
   const isError = router.pathname.includes("/_error");
   const path = router.asPath;
   const dispatch = useDispatch();
-  const { loading } = useSelector(({ CommonSlice }) => CommonSlice); // Get loading state from Redux
+  const { loading } = useSelector(({ CommonSlice }) => CommonSlice);
 
   useEffect(() => {
     dispatch(loadTokenFromLocalStorage());
   }, [dispatch]);
-
-  console.log("loading", loading);
 
   return (
     <div style={{ position: "relative" }}>

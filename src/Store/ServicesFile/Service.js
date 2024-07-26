@@ -23,6 +23,8 @@ export const AddDiscussionAPI = (data) =>
   POST(`${BASE_URL}forum/addDiscussion`, data);
 export const AddForumCategoryAPI = (data) =>
   POST(`${BASE_URL}forum/addCategory`, data);
+export const AddCommentAPI = (data) =>
+  POST(`${BASE_URL}forum/addComment`, data);
 export const GetAllForumCategoryAPI = (data) =>
   GET(`${BASE_URL}forum/getAllCategory`, data);
 export const GetDiscussionsAPI = (data) =>

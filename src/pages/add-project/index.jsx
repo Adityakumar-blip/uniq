@@ -56,19 +56,51 @@ const Index = () => {
     const randomImage = RandomImages[randomIndex];
 
     const response = await fetch(randomImage.file.src).then((r) => r.blob());
-    console.log(response);
+
+    const compressedImage = await compressImage(response);
+
     const reader = new FileReader();
 
     reader.onloadend = () => {
       setSelectedImage(reader.result);
 
-      srcToFile(reader.result, "hello.png", "image/png").then(function (file) {
+      srcToFile(reader.result, "compressed.png", "image/png").then(function (
+        file
+      ) {
         formik.setFieldValue("img", file);
-        // console.log();
       });
     };
-    // console.log(randomImage.file);
-    reader.readAsDataURL(response);
+    reader.readAsDataURL(compressedImage);
+  };
+
+  const compressImage = (file) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+
+          const maxWidth = 800;
+          const scaleFactor = maxWidth / img.width;
+          canvas.width = maxWidth;
+          canvas.height = img.height * scaleFactor;
+
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          canvas.toBlob(
+            (blob) => {
+              resolve(blob);
+            },
+            "image/jpeg",
+            0.7
+          );
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleRemoveImg = () => {
@@ -101,7 +133,6 @@ const Index = () => {
     },
   });
 
-  console.log(formik.values);
   const { tags, technologies } = useSelector(
     ({ ProjectSlice }) => ProjectSlice
   );

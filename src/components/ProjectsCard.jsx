@@ -1,9 +1,10 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { imgUrl } from "../../utils/HTTP";
 
 const ProjectsCard = ({ props }) => {
+  const [isNew, setIsNew] = useState(false);
   const router = useRouter();
   const placeholderImage =
     "https://images.unsplash.com/photo-1717137389747-d1d4ced6abc8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx8ZW58MHx8fHx8";
@@ -21,6 +22,20 @@ const ProjectsCard = ({ props }) => {
   const handleImageError = () => {
     setImageSrc(placeholderImage);
   };
+
+  useEffect(() => {
+    const checkIfNew = () => {
+      if (props?.createdAt) {
+        const creationDate = new Date(props.createdAt);
+        const currentDate = new Date();
+        const differenceInTime = currentDate.getTime() - creationDate.getTime();
+        const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+        setIsNew(differenceInDays <= 7);
+      }
+    };
+
+    checkIfNew();
+  }, [props?.createdAt]);
 
   return (
     <div
@@ -41,9 +56,11 @@ const ProjectsCard = ({ props }) => {
         <div>
           <h2 className="card-title text-2xl font-bold mb-2 flex items-center">
             {props.name}
-            <span className="badge badge-secondary text-xs ml-2 px-2 py-1 rounded-full bg-indigo-500 text-white animate-pulse">
-              NEW
-            </span>
+            {isNew && (
+              <span className="badge badge-secondary text-xs ml-2 px-2 py-1 rounded-full bg-indigo-500 text-white animate-pulse">
+                NEW
+              </span>
+            )}
           </h2>
           <p className="text-gray-600 text-sm line-clamp-3 transition-all duration-300 ease-in-out group-hover:line-clamp-none">
             {props.shortIntro || ""}

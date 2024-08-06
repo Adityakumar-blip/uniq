@@ -70,6 +70,7 @@ const DiscussionDetails = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
+        <h4 className="text-primary font-semibold italic mb-2">{`#${discussion?.categoryData?.title}`}</h4>
         <h1 className="text-4xl font-bold mb-6 text-gray-800">
           {discussion?.title}
         </h1>

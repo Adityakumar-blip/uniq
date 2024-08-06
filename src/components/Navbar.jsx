@@ -68,7 +68,8 @@ const Navbar = () => {
                 <a
                   class={`block py-2 px-3 ${
                     path === "/projects" ? "text-primary" : "text-gray-900"
-                  } rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0  md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`}
+                  } rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0  md:dark:hover:text-blue-500 
+                  hover:cursor-pointer dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`}
                 >
                   Projects
                 </a>
@@ -87,7 +88,7 @@ const Navbar = () => {
                 <a
                   class={`block py-2 px-3 ${
                     path === "/discussion" ? "text-primary" : "text-gray-900"
-                  } rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0  md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`}
+                  } rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0  md:dark:hover:text-blue-500 dark:hover:bg-gray-700 hover:cursor-pointer dark:hover:text-white md:dark:hover:bg-transparent`}
                 >
                   Community
                 </a>
@@ -110,7 +111,7 @@ const Navbar = () => {
                         className="flex items-center gap-2 m-1  font-semibold"
                       >
                         <img
-                          class="w-12 h-12 border-2 border-white rounded-full dark:border-gray-800"
+                          class="w-12 h-12 border-2 border-white rounded-full dark:border-gray-400"
                           src={`${imgUrl}${userInfo?.img}`}
                           alt=""
                         />

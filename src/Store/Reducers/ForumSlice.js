@@ -2,10 +2,14 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   AddCommentAPI,
   AddDiscussionAPI,
+  AddDownvoteAPI,
+  AddUpvoteAPI,
   GetAllForumCategoryAPI,
   GetCommentsByForumAPI,
+  GetDiscussionByCategoryAPI,
   GetDiscussionByIdAPI,
   GetDiscussionsAPI,
+  GetForumByAuthorAPI,
   GetRepliesByCommentAPI,
 } from "../ServicesFile/Service.js";
 import { setLoading } from "./CommonSlice.js";
@@ -16,6 +20,8 @@ const initialState = {
   discussion: {},
   comments: [],
   replies: [],
+  forumsByAuthor: [],
+  discussionByCategory: [],
 };
 
 export const AddDiscussion = createAsyncThunk(
@@ -65,6 +71,48 @@ export const AddComment = createAsyncThunk(
     try {
       dispatch(setLoading(true));
       const result = await AddCommentAPI(values);
+      dispatch(setLoading(false));
+      if (result) {
+        return result;
+      } else {
+        throw result;
+      }
+    } catch (error) {
+      const errorMessage = error?.message || "An error occurred.";
+      //   dispatch(setMessage({ text: errorMessage, type: AlertEnum.Error }));
+      dispatch(setLoading(false));
+      throw error;
+    }
+  }
+);
+
+export const AddUpvote = createAsyncThunk(
+  "AddUpvote",
+  async (values, { dispatch }) => {
+    try {
+      dispatch(setLoading(true));
+      const result = await AddUpvoteAPI(values);
+      dispatch(setLoading(false));
+      if (result) {
+        return result;
+      } else {
+        throw result;
+      }
+    } catch (error) {
+      const errorMessage = error?.message || "An error occurred.";
+      //   dispatch(setMessage({ text: errorMessage, type: AlertEnum.Error }));
+      dispatch(setLoading(false));
+      throw error;
+    }
+  }
+);
+
+export const AddDownvote = createAsyncThunk(
+  "AddDownvote",
+  async (values, { dispatch }) => {
+    try {
+      dispatch(setLoading(true));
+      const result = await AddDownvoteAPI(values);
       dispatch(setLoading(false));
       if (result) {
         return result;
@@ -159,6 +207,26 @@ export const GetCommentsByForum = createAsyncThunk(
   }
 );
 
+export const GetForumsByAuthor = createAsyncThunk(
+  "GetForumsByAuthor",
+  async (values, { dispatch }) => {
+    try {
+      // dispatch(setLoading(true));
+      const result = await GetForumByAuthorAPI(values);
+      //   dispatch(setLoading(false));
+      if (result) {
+        return result;
+      } else {
+        throw result;
+      }
+    } catch (error) {
+      const errorMessage = error?.message || "An error occurred.";
+      //   dispatch(setMessage({ text: errorMessage, type: AlertEnum.Error }));
+      throw error;
+    }
+  }
+);
+
 export const GetRepliesByComment = createAsyncThunk(
   "GetRepliesByComment",
   async (values, { dispatch }) => {
@@ -179,6 +247,26 @@ export const GetRepliesByComment = createAsyncThunk(
   }
 );
 
+export const GetDiscussionByCategory = createAsyncThunk(
+  "GetDiscussionByCategory",
+  async (values, { dispatch }) => {
+    try {
+      // dispatch(setLoading(true));
+      const result = await GetDiscussionByCategoryAPI(values);
+      //   dispatch(setLoading(false));
+      if (result) {
+        return result;
+      } else {
+        throw result;
+      }
+    } catch (error) {
+      const errorMessage = error?.message || "An error occurred.";
+      //   dispatch(setMessage({ text: errorMessage, type: AlertEnum.Error }));
+      throw error;
+    }
+  }
+);
+
 export const ProjectSlice = createSlice({
   name: "ProjectSlice",
   initialState,
@@ -187,6 +275,12 @@ export const ProjectSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(GetAllDiscussions.fulfilled, (state, action) => {
       state.discussions = action.payload.data;
+    });
+    builder.addCase(GetDiscussionByCategory.fulfilled, (state, action) => {
+      state.discussionByCategory = action.payload.data;
+    });
+    builder.addCase(GetForumsByAuthor.fulfilled, (state, action) => {
+      state.forumsByAuthor = action.payload.data;
     });
     builder.addCase(GetAllDiscussionCategory.fulfilled, (state, action) => {
       state.categories = action.payload.data;

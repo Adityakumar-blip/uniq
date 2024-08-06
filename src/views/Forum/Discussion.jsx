@@ -8,22 +8,16 @@ import React, { useEffect } from "react";
 import UseNavigateToRoute from "../../../utils/navigtion";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  AddDownvote,
+  AddUpvote,
   GetAllDiscussionCategory,
   GetAllDiscussions,
+  GetDiscussionByCategory,
 } from "@/Store/Reducers/ForumSlice";
 
 const Discussion = () => {
   const NavigateToRoute = UseNavigateToRoute();
   const { categories } = useSelector(({ ForumSlice }) => ForumSlice);
-
-  const topics = [
-    { title: "Productivity", discussions: "12.4k discussions" },
-    { title: "Learning", discussions: "9.7k discussions" },
-    { title: "Technology", discussions: "15.2k discussions" },
-    { title: "Wellness", discussions: "10.5k discussions" },
-    { title: "Creativity", discussions: "8.3k discussions" },
-    { title: "Career Development", discussions: "13.6k discussions" },
-  ];
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -39,6 +33,21 @@ const Discussion = () => {
     router.push({
       pathname: "/discussion/details",
       query: { forumId: id },
+    });
+  };
+
+  const handleUpvote = (forumId) => {
+    dispatch(AddUpvote({ forumId }));
+  };
+
+  const handleDownvote = (forumId) => {
+    dispatch(AddDownvote({ forumId }));
+  };
+
+  const handleCategoryNavigate = (categoryId) => {
+    router.push({
+      pathname: "discussion/by-category",
+      query: { categoryId },
     });
   };
 
@@ -65,7 +74,6 @@ const Discussion = () => {
               <div
                 key={index}
                 className="flex items-center p-4 rounded-lg cursor-pointer hover:bg-gray-100 "
-                onClick={() => handleOpenDiscussion(item?._id)}
               >
                 <div className="mr-4 ">
                   <Image
@@ -77,14 +85,25 @@ const Discussion = () => {
                   />
                 </div>
                 <div className="flex-grow">
-                  <h2 className="text-lg font-semibold">{item.title}</h2>
+                  <h2
+                    className="text-lg font-semibold"
+                    onClick={() => handleOpenDiscussion(item?._id)}
+                  >
+                    {item.title}
+                  </h2>
                   <p className="text-gray-500">
                     {item.comments.length > 0 &&
                       `${item?.comments?.length} comments`}{" "}
                   </p>
                   <div className="mt-4 flex items-center gap-2">
-                    <Upvote upvote={item?.upvotes} />
-                    <Downvote downvote={item?.downvotes} />
+                    <Upvote
+                      upvote={item?.upvotes}
+                      handleUpvote={() => handleUpvote(item?._id)}
+                    />
+                    <Downvote
+                      downvote={item?.downvotes}
+                      handleDownvote={() => handleDownvote(item?._id)}
+                    />
                     {/* <Comment comments={item?.comments} /> */}
                     <Share />
                   </div>
@@ -98,7 +117,7 @@ const Discussion = () => {
         <div className="lg:w-1/3 mt-8 lg:mt-0">
           <h1 className="text-2xl font-bold mb-4">Trending Topics</h1>
           <div className="space-y-4">
-            {categories.map((item, index) => (
+            {categories?.map((item, index) => (
               <div
                 key={index}
                 className="flex items-center  p-4 rounded-lg hover:cursor-pointer"
@@ -108,7 +127,10 @@ const Discussion = () => {
                     <h6 className="font-bold">{item?.title.charAt(0)}</h6>
                   </button>
                 </div>
-                <div className="flex-grow">
+                <div
+                  className="flex-grow"
+                  onClick={() => handleCategoryNavigate(item?._id)}
+                >
                   <h2 className="text-lg font-semibold">{item?.title}</h2>
                   <p className="text-gray-500">
                     {item?.discussions > 0 &&

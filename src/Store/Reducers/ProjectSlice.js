@@ -6,6 +6,7 @@ import {
   GetAllCommonApi,
   GetAllProjectsApi,
   GetProjectByIdApi,
+  GetProjectsByAuthorAPI,
 } from "../ServicesFile/Service";
 import { setLoading } from "./CommonSlice";
 
@@ -14,6 +15,7 @@ const initialState = {
   projectDetails: {},
   tags: [],
   technologies: [],
+  projectsByAuthor: [],
 };
 
 export const AddProject = createAsyncThunk(
@@ -136,6 +138,27 @@ export const GetAllCommon = createAsyncThunk(
     }
   }
 );
+
+export const GetProjectsByAuthor = createAsyncThunk(
+  "GetProjectsByAuthor",
+  async (values, { dispatch }) => {
+    try {
+      // dispatch(setLoading(true));
+      const result = await GetProjectsByAuthorAPI(values);
+      //   dispatch(setLoading(false));
+      if (result) {
+        return result;
+      } else {
+        throw result;
+      }
+    } catch (error) {
+      const errorMessage = error?.message || "An error occurred.";
+      //   dispatch(setMessage({ text: errorMessage, type: AlertEnum.Error }));
+      throw error;
+    }
+  }
+);
+
 export const ProjectSlice = createSlice({
   name: "ProjectSlice",
   initialState,
@@ -147,6 +170,9 @@ export const ProjectSlice = createSlice({
     });
     builder.addCase(GetProjectById.fulfilled, (state, action) => {
       state.projectDetails = action.payload.data;
+    });
+    builder.addCase(GetProjectsByAuthor.fulfilled, (state, action) => {
+      state.projectsByAuthor = action.payload.data;
     });
     builder.addCase(GetAllCommon.fulfilled, (state, action) => {
       if (action.payload.data) {

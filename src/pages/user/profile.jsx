@@ -4,8 +4,12 @@ import TabComponent from "@/components/TabComponent";
 import ContributionHeatmap from "@/components/ContributonGraph";
 import ProfileModal from "@/components/ProfileModal";
 import Image from "next/image";
+import { useDispatch } from "react-redux";
+import { GetProjectsByAuthor } from "@/Store/Reducers/ProjectSlice";
+import { GetForumsByAuthor } from "@/Store/Reducers/ForumSlice";
 
 const profile = () => {
+  const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
@@ -32,6 +36,13 @@ const profile = () => {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(GetProjectsByAuthor(userInfo?._id));
+      dispatch(GetForumsByAuthor(userInfo?._id));
+    }
+  }, [dispatch, userInfo]);
 
   return (
     <div className=" ">
@@ -106,9 +117,9 @@ const profile = () => {
           </div>
         </div>
       </div> */}
-      {/* <div className="w-screen p-6">
-        <TabComponent />
-      </div> */}
+      <div className=" p-6">
+        <TabComponent userInfo={userInfo} />
+      </div>
     </div>
   );
 };

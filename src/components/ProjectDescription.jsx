@@ -21,8 +21,6 @@ const ProjectDescription = () => {
     }
   }, [id]);
 
-  console.log("projectDetails", projectDetails);
-
   const handleConnect = () => {
     if (token) {
     } else {
@@ -88,7 +86,10 @@ const ProjectDescription = () => {
         {/* project description section */}
         <div className="mt-4 text-black">
           <p className="text-xl font-semibold">Description</p>
-          <p className="mt-2">{projectDetails?.description}</p>
+          <p className="mt-2"></p>
+          <div
+            dangerouslySetInnerHTML={{ __html: projectDetails?.description }}
+          ></div>
         </div>
 
         {/* contributos section  */}

@@ -17,6 +17,8 @@ export const ContributeApi = (data) =>
 export const AddCommonApi = (data) => POST(`${BASE_URL}common/addCommon`, data);
 export const GetAllCommonApi = (data) =>
   GET(`${BASE_URL}common/getAllCommon?type=${data}`);
+export const GetProjectsByAuthorAPI = (data) =>
+  GET(`${BASE_URL}projects/getProjectByAuthor?authorId=${data}`);
 
 // discussion APIs
 export const AddDiscussionAPI = (data) =>
@@ -25,6 +27,10 @@ export const AddForumCategoryAPI = (data) =>
   POST(`${BASE_URL}forum/addCategory`, data);
 export const AddCommentAPI = (data) =>
   POST(`${BASE_URL}forum/addComment`, data);
+export const AddUpvoteAPI = (data) => POST(`${BASE_URL}forum/addUpvote`, data);
+export const AddDownvoteAPI = (data) =>
+  POST(`${BASE_URL}forum/addDownvote`, data);
+
 export const GetAllForumCategoryAPI = (data) =>
   GET(`${BASE_URL}forum/getAllCategory`, data);
 export const GetDiscussionsAPI = (data) =>
@@ -35,3 +41,7 @@ export const GetCommentsByForumAPI = (data) =>
   GET(`${BASE_URL}forum/getCommentsByForum?forumId=${data}`);
 export const GetRepliesByCommentAPI = (data) =>
   GET(`${BASE_URL}forum/getRepliesById?commentId=${data}`);
+export const GetForumByAuthorAPI = (data) =>
+  GET(`${BASE_URL}forum/getDiscussionByAuthor?authorId=${data}`);
+export const GetDiscussionByCategoryAPI = (data) =>
+  GET(`${BASE_URL}forum/getDiscussionByCategory?categoryId=${data}`);

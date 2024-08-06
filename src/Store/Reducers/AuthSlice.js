@@ -12,23 +12,21 @@ export const SignIn = createAsyncThunk(
     try {
       dispatch(setLoading(true));
       const result = await LoginApi(values);
-      //   dispatch(setLoading(false));
-      console.log("Result of login", result);
+
       if (result) {
         return result;
       } else {
-        throw result;
+        throw new Error("Login failed");
       }
     } catch (error) {
       const errorMessage = error?.message || "An error occurred.";
-      //   dispatch(setMessage({ text: errorMessage, type: AlertEnum.Error }));
+      dispatch(setMessage({ text: errorMessage, type: AlertEnum.Error }));
       throw error;
     } finally {
-      setLoading(false);
+      dispatch(setLoading(false));
     }
   }
 );
-
 export const SignUp = createAsyncThunk(
   "SignUp",
   async (values, { dispatch }) => {

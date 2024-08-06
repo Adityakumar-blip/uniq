@@ -1,66 +1,41 @@
+import ForumListing from "@/views/Profile/ForumListing";
+import ProjectList from "@/views/Profile/ProjectListing";
 import React, { useState } from "react";
 
-const TabComponent = () => {
+const TabComponent = ({ userInfo }) => {
   const [activeTab, setActiveTab] = useState(1);
-
-  const handleTabClick = (tabNumber) => {
-    setActiveTab(tabNumber);
-  };
+  const tabs = [
+    { id: 1, title: "My Projects", content: "This is the content of Tab 1." },
+    {
+      id: 2,
+      title: "My Discussions",
+      content: "This is the content of Tab 2.",
+    },
+    { id: 3, title: "Settings", content: "This is the content of Tab 3." },
+  ];
 
   return (
-    <div className=" text-black mx-auto">
-      <div className="flex text-sm">
-        <button
-          onClick={() => handleTabClick(1)}
-          className={`px-4 py-2 rounded-l ${
-            activeTab === 1
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 text-gray-700"
-          }`}
-        >
-          Tab 1
-        </button>
-        <button
-          onClick={() => handleTabClick(2)}
-          className={`px-4 py-2 ${
-            activeTab === 2
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 text-gray-700"
-          }`}
-        >
-          Tab 2
-        </button>
-        <button
-          onClick={() => handleTabClick(3)}
-          className={`px-4 py-2 rounded-r ${
-            activeTab === 3
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 text-gray-700"
-          }`}
-        >
-          Tab 3
-        </button>
+    <div className="mt-8">
+      <div className="flex border-b">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`flex-1 py-2 transition-colors duration-300 ${
+              activeTab === tab.id
+                ? "border-b-2 border-blue-500 text-blue-500"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            {tab.title}
+          </button>
+        ))}
       </div>
-      <div className="p-4 bg-white shadow-md rounded-md mt-4">
-        {activeTab === 1 && (
-          <div>
-            <h2 className="text-lg font-semibold">Tab 1 Content</h2>
-            <p>This is the content of Tab 1.</p>
-          </div>
-        )}
-        {activeTab === 2 && (
-          <div>
-            <h2 className="text-lg font-semibold">Tab 2 Content</h2>
-            <p>This is the content of Tab 2.</p>
-          </div>
-        )}
-        {activeTab === 3 && (
-          <div>
-            <h2 className="text-lg font-semibold">Tab 3 Content</h2>
-            <p>This is the content of Tab 3.</p>
-          </div>
-        )}
+      <div className="mt-4 w-full">
+        {activeTab === 1 && <ProjectList userInfo={userInfo} />}
       </div>
+      <div className="mt-4">{activeTab === 2 && <ForumListing />}</div>
+      {/* <div className="mt-4">{activeTab === 3 && <ProjectList />}</div> */}
     </div>
   );
 };

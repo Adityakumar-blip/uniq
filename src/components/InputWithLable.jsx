@@ -10,7 +10,7 @@ const InputWithLable = ({ name, value, onChange, errors, touched }) => {
           name={name}
           value={value}
           onChange={onChange}
-          className={`input input-bordered bg-white input-primary w-full text-black ${
+          className={`bg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
             errors && touched ? "border-red-500" : ""
           }`}
         />

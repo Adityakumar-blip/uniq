@@ -21,6 +21,13 @@ const initialValues = {
   githubUrl: "",
   techstack: [],
   tags: [],
+  // projectLinks: [
+  //   {
+  //     title: "",
+  //     url: "",
+  //     description: "",
+  //   },
+  // ],
 };
 
 const Index = () => {
@@ -142,6 +149,23 @@ const Index = () => {
     dispatch(GetAllCommon("technologies"));
   }, []);
 
+  const [step, setStep] = useState(1);
+
+  const handleAddProjectLink = () => {
+    const newProjectLinks = [
+      ...formik.values.projectLinks,
+      { title: "", url: "", description: "" },
+    ];
+    formik.setFieldValue("projectLinks", newProjectLinks);
+  };
+
+  const handleRemoveProjectLink = (index) => {
+    const newProjectLinks = formik.values.projectLinks.filter(
+      (_, i) => i !== index
+    );
+    formik.setFieldValue("projectLinks", newProjectLinks);
+  };
+
   return (
     <div className=" bg-gray-100 py-12 px-4 sm:px-6 lg:px-8 ">
       <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md overflow-scroll ">
@@ -232,15 +256,17 @@ const Index = () => {
               </div>
               <div>
                 <label
-                  htmlFor="techstack"
+                  htmlFor="githubUrl"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Technologies Requirement
+                  Github URL
                 </label>
-                <MultiSelectDropdown
-                  options={technologies}
-                  onChange={(data) => formik.setFieldValue("techstack", data)}
-                  type="technology"
+                <InputWithLable
+                  name="githubUrl"
+                  value={formik.values.githubUrl}
+                  onChange={formik.handleChange}
+                  errors={formik.errors.githubUrl}
+                  touched={formik.touched.githubUrl}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
@@ -261,19 +287,18 @@ const Index = () => {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
+
               <div>
                 <label
-                  htmlFor="shortIntro"
+                  htmlFor="techstack"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Short Description
+                  Technologies Requirement
                 </label>
-                <InputWithLable
-                  name="shortIntro"
-                  value={formik.values.shortIntro}
-                  onChange={formik.handleChange}
-                  errors={formik.errors.shortIntro}
-                  touched={formik.touched.shortIntro}
+                <MultiSelectDropdown
+                  options={technologies}
+                  onChange={(data) => formik.setFieldValue("techstack", data)}
+                  type="technology"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
@@ -281,17 +306,17 @@ const Index = () => {
 
             <div>
               <label
-                htmlFor="githubUrl"
+                htmlFor="shortIntro"
                 className="block text-sm font-medium text-gray-700"
               >
-                Github URL
+                Short Description
               </label>
               <InputWithLable
-                name="githubUrl"
-                value={formik.values.githubUrl}
+                name="shortIntro"
+                value={formik.values.shortIntro}
                 onChange={formik.handleChange}
-                errors={formik.errors.githubUrl}
-                touched={formik.touched.githubUrl}
+                errors={formik.errors.shortIntro}
+                touched={formik.touched.shortIntro}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               />
             </div>
@@ -375,6 +400,83 @@ const Index = () => {
                   </p>
                 )}
             </div>
+
+            {/* Project Links Section */}
+            {/* <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-4">Project Links</h3>
+              {formik.values.projectLinks.map((link, index) => (
+                <div
+                  key={index}
+                  className="mb-4 p-4 border border-gray-200 rounded-md"
+                >
+                  <div className="mb-2">
+                    <label
+                      htmlFor={`projectLinks.${index}.title`}
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Title
+                    </label>
+                    <input
+                      type="text"
+                      id={`projectLinks.${index}.title`}
+                      name={`projectLinks.${index}.title`}
+                      value={link.title}
+                      onChange={formik.handleChange}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="mb-2">
+                    <label
+                      htmlFor={`projectLinks.${index}.url`}
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      URL
+                    </label>
+                    <input
+                      type="url"
+                      id={`projectLinks.${index}.url`}
+                      name={`projectLinks.${index}.url`}
+                      value={link.url}
+                      onChange={formik.handleChange}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="mb-2">
+                    <label
+                      htmlFor={`projectLinks.${index}.description`}
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Description
+                    </label>
+                    <input
+                      type="text"
+                      id={`projectLinks.${index}.description`}
+                      name={`projectLinks.${index}.description`}
+                      value={link.description}
+                      onChange={formik.handleChange}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+                  {index > 2 && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveProjectLink(index)}
+                      className="mt-2 px-3 py-1 text-sm text-red-600 hover:text-red-800 focus:outline-none"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={handleAddProjectLink}
+                className="mt-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Add Project Link
+              </button>
+            </div> */}
+
             {/* </div> */}
 
             <div className="flex justify-end ">

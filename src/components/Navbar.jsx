@@ -33,7 +33,10 @@ const Navbar = () => {
     <div>
       <nav class="bg-white border-gray-200 ">
         <div class="w-full-xl px-10 flex flex-wrap items-center justify-between mx-auto p-4">
-          <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
+          <a
+            href="/projects"
+            class="flex items-center space-x-3 rtl:space-x-reverse"
+          >
             <span class="self-center text-2xl font-semibold font-mono text-black whitespace-nowrap ">
               dlabss_
             </span>
@@ -122,6 +125,9 @@ const Navbar = () => {
                       >
                         <li onClick={() => router.push("/user/profile")}>
                           <a>Profile</a>
+                        </li>
+                        <li onClick={() => router.push("/about")}>
+                          <a>About Dlabbs</a>
                         </li>
                         <li onClick={() => handleLogout()}>
                           <a>Logout</a>

@@ -27,6 +27,7 @@ const ProfileModal = ({ isOpen, closeModal, id }) => {
               "user",
               JSON.stringify(result?.payload?.data?.data)
             );
+            closeModal();
           }
           //   router.push("/projects");
         });

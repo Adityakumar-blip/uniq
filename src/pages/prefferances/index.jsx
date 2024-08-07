@@ -53,7 +53,6 @@ const index = () => {
     },
   });
 
-  console.log("Formik values", formik.values);
   return (
     <div className="p-10 flex flex-col items-center justify-center">
       <div>

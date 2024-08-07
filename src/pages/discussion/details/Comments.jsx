@@ -35,7 +35,6 @@ const Comment = ({
 
   const handleReplySubmit = (e) => {
     e.preventDefault();
-    console.log("Submitting reply:", replyText);
     setIsReplying(false);
     setReplyText("");
   };
@@ -74,7 +73,7 @@ const Comment = ({
           </p>
         </div>
       </div>
-      <p className="text-gray-700 mb-4 leading-relaxed">{comment.text}</p>
+      <p className="text-gray-700 mb-4 leading-relaxed">{comment?.text}</p>
       <div className="flex items-center space-x-4 text-sm">
         <motion.button
           className="flex items-center space-x-1 text-gray-500 hover:text-blue-500 transition-colors duration-200"

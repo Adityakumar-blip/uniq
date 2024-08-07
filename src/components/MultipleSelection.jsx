@@ -10,26 +10,31 @@ const animatedComponents = makeAnimated();
 const customStyles = {
   control: (provided) => ({
     ...provided,
-    height: "3rem",
+    minHeight: "3rem",
     display: "flex",
     borderColor: "gray",
     borderWidth: "1px",
     borderRadius: "0.375rem",
-    padding: "0 0.5rem",
+    padding: "0.25rem 0.5rem",
     backgroundColor: "#FFFFFF",
-    // justifyContent: "center",
     alignItems: "center",
+    flexWrap: "wrap",
+  }),
+  valueContainer: (provided) => ({
+    ...provided,
+    flexWrap: "wrap",
+    maxHeight: "100px", // Adjust this value as needed
+    overflowY: "auto",
   }),
   placeholder: (provided) => ({
     ...provided,
     margin: 0,
-    // textAlign: "center",
     width: "100%",
   }),
   singleValue: (provided) => ({
     ...provided,
     margin: 0,
-    textAlign: "center",
+    textAlign: "left",
     width: "100%",
   }),
   menu: (provided) => ({
@@ -43,15 +48,17 @@ const customStyles = {
     ...provided,
     backgroundColor: "#BFDBFE",
     borderRadius: "0.375rem",
-    padding: "0.25rem",
+    margin: "2px",
   }),
   multiValueLabel: (provided) => ({
     ...provided,
     color: "#1E40AF",
+    padding: "2px 6px",
   }),
   multiValueRemove: (provided) => ({
     ...provided,
     color: "#1E40AF",
+    padding: "2px",
     "&:hover": {
       backgroundColor: "#93C5FD",
       color: "#1E3A8A",

@@ -7,6 +7,7 @@ import {
   GetAllDiscussionCategory,
 } from "@/Store/Reducers/ForumSlice";
 import { useFormik } from "formik";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -17,6 +18,7 @@ const initialValues = {
 };
 
 const NewDiscussionForm = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const { categories } = useSelector(({ ForumSlice }) => ForumSlice);
 
@@ -27,7 +29,11 @@ const NewDiscussionForm = () => {
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: (values) => {
-      dispatch(AddDiscussion(values));
+      dispatch(AddDiscussion(values)).then((result) => {
+        if (result?.payload?.data?.status === 201) {
+          router.push("/discussion");
+        }
+      });
     },
   });
 

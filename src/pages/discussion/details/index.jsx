@@ -12,8 +12,15 @@ import {
 import TextArea from "@/components/Design/TextArea";
 import { useFormik } from "formik";
 import Head from "next/head";
+import {
+  fetchAllDiscussionPaths,
+  fetchCommentsByForum,
+  fetchForumById,
+} from "../../../../utils/api";
+import { FaBackward } from "react-icons/fa";
+import { MdKeyboardBackspace } from "react-icons/md";
 
-const DiscussionDetails = () => {
+const DiscussionDetails = ({ discussionProps, commentsProps }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { forumId } = router.query;
@@ -53,13 +60,16 @@ const DiscussionDetails = () => {
 
   const formik = useFormik({
     initialValues: { text: "", forumId: "", commentId: "", isReplied: false },
-    onSubmit: (values) => {
-      handleAddComment(values);
+    onSubmit: async (values) => {
+      await handleAddComment(values);
     },
   });
 
-  const handleAddComment = (values) => {
-    dispatch(AddComment(values));
+  const handleAddComment = async (values) => {
+    dispatch(AddComment(values)).then(() => {
+      dispatch(GetForumById(forumId));
+      dispatch(GetCommentsByForum(forumId));
+    });
   };
   const origin =
     typeof window !== "undefined" && window.location.origin
@@ -86,6 +96,12 @@ const DiscussionDetails = () => {
         <meta property="og:type" content="article" />
         <meta property="og:image" content={discussion?.author?.img} />
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={discussion?.title} />
+        <meta
+          name="twitter:description"
+          content={discussion?.content?.substring(0, 160)}
+        />
+        <meta name="twitter:image" content={discussion?.author?.img} />
       </Head>
 
       <div className="container mx-auto px-4 py-12 flex flex-col lg:flex-row bg-gray-50">
@@ -96,7 +112,14 @@ const DiscussionDetails = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h4 className="text-primary font-semibold italic mb-2">{`#${discussion?.categoryData?.title}`}</h4>
+          <div className="flex items-center gap-4 mb-2">
+            <MdKeyboardBackspace
+              className="text-primary cursor-pointer"
+              size="25px"
+              onClick={() => router.back()}
+            />
+            <h4 className="text-primary font-semibold italic ">{`#${discussion?.categoryData?.title}`}</h4>
+          </div>
           <h1 className="text-4xl font-bold mb-6 text-gray-800">
             {discussion?.title}
           </h1>
@@ -192,5 +215,29 @@ const DiscussionDetails = () => {
     </>
   );
 };
+
+// export async function getStaticPaths() {
+//   const paths = await fetchAllDiscussionPaths();
+//   return {
+//     paths,
+//     fallback: true,
+//   };
+// }
+
+// export async function getStaticProps(context) {
+//   const { forumId } = context.params;
+//   const [discusssionProps, commentsProps] = await Promise.all([
+//     fetchForumById(forumId),
+//     fetchCommentsByForum(forumId),
+//   ]);
+
+//   return {
+//     props: {
+//       discusssionProps,
+//       commentsProps,
+//     },
+//     revalidate: 1,
+//   };
+// }
 
 export default DiscussionDetails;

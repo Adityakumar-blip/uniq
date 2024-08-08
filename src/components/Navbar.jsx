@@ -17,6 +17,8 @@ const Navbar = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const path = router.asPath;
 
+  const { token, user } = useSelector(({ CommonSlice }) => CommonSlice);
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const user = localStorage.getItem("user");
@@ -24,7 +26,7 @@ const Navbar = () => {
         setUserInfo(JSON.parse(user));
       }
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -37,8 +39,6 @@ const Navbar = () => {
       document.body.classList.remove("menu-open");
     };
   }, [isMenuOpen]);
-
-  const { token } = useSelector(({ CommonSlice }) => CommonSlice);
 
   const handleLogout = () => {
     localStorage.removeItem("token");

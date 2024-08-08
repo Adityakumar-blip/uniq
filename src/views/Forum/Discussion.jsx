@@ -44,10 +44,10 @@ const Discussion = () => {
     dispatch(AddDownvote({ forumId }));
   };
 
-  const handleCategoryNavigate = (categoryId) => {
+  const handleCategoryNavigate = (categoryId, title) => {
     router.push({
       pathname: "discussion/by-category",
-      query: { categoryId },
+      query: { categoryId, title },
     });
   };
 
@@ -129,7 +129,7 @@ const Discussion = () => {
                 </div>
                 <div
                   className="flex-grow"
-                  onClick={() => handleCategoryNavigate(item?._id)}
+                  onClick={() => handleCategoryNavigate(item?._id, item?.title)}
                 >
                   <h2 className="text-lg font-semibold">{item?.title}</h2>
                   <p className="text-gray-500">

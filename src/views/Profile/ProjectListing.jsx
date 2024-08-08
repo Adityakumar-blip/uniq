@@ -1,3 +1,4 @@
+import NoDataAvailable from "@/components/NoDataAvailable";
 import { GetProjectsByAuthor } from "@/Store/Reducers/ProjectSlice";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -71,12 +72,20 @@ const ProjectList = ({ userInfo }) => {
   const { projectsByAuthor } = useSelector(({ ProjectSlice }) => ProjectSlice);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  p-6 bg-gray-100">
-      {Array.isArray(projectsByAuthor) &&
-        projectsByAuthor?.map((project) => (
-          <ProjectCard key={project._id} project={project} />
-        ))}
-    </div>
+    <>
+      {projectsByAuthor.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  p-6 bg-gray-100">
+          {Array.isArray(projectsByAuthor) &&
+            projectsByAuthor?.map((project) => (
+              <ProjectCard key={project._id} project={project} />
+            ))}
+        </div>
+      ) : (
+        <div>
+          <NoDataAvailable message="No Projects Available." />
+        </div>
+      )}
+    </>
   );
 };
 

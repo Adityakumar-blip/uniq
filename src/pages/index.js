@@ -6,8 +6,6 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <div>
-      <p>Home</p>
-    </div>
+    <div className="bg-white min-h-screen flex items-center justify-center p-4"></div>
   );
 }

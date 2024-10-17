@@ -75,9 +75,9 @@ const DiscussionDetails = ({ discussionProps, commentsProps }) => {
     typeof window !== "undefined" && window.location.origin
       ? window.location.origin
       : "";
-  const shareUrl = `${origin}/discussion/details?forumId=${forumId}`;
-
-  console.log("share url", shareUrl);
+  const shareUrl = forumId
+    ? `${origin}/discussion/details?forumId=${forumId}`
+    : "";
 
   return (
     <>

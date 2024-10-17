@@ -1,179 +1,112 @@
-import Features from "@/components/Home/Features";
-import HeroSection from "@/components/Home/HeroSection";
-import VideoComponent from "@/components/Home/VideoComponent";
+import Flow from "@/components/Design/Flow";
+import { useRouter } from "next/router";
 import React from "react";
+import {
+  FiArrowRight,
+  FiCheck,
+  FiUsers,
+  FiBook,
+  FiTrendingUp,
+  FiHeart,
+} from "react-icons/fi";
 
-const index = () => {
+const LandingPage = () => {
+  const router = useRouter();
   return (
-    <div>
-      {/* <div className="">
-        <main>
-          <section className="bg-white py-20">
-            <div className="container mx-auto flex justify-between items-center">
-              <div className="w-1/2">
-                <img
-                  src="/path/to/your/image.png"
-                  alt="Dashboard"
-                  className="w-full"
-                />
-              </div>
-              <div className="w-1/2 px-10">
-                <h2 className="text-4xl font-bold">Less trouble. More fun.</h2>
-                <p className="mt-4 text-lg">
-                  Builder helps you get your models into production faster by
-                  simplifying the set-up of backend, frontend, and MLOps.
-                </p>
-              </div>
+    <div className="bg-white min-h-screen text-gray-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Top Section */}
+        <div className="flex flex-col lg:flex-row items-center justify-between">
+          <div className="lg:w-1/2 mb-12 lg:mb-0">
+            <h1 className="text-5xl lg:text-6xl font-extrabold mb-6 leading-tight text-gray-900">
+              Fresh Ideas, Seasoned Expertise, One Platform
+            </h1>
+            <p className="text-xl text-gray-600 mb-8">
+              Connect with others where new ideas meet expert knowledge. Work on
+              projects together, learn from experienced professionals, and grow
+              on a platform that brings everyone together.
+            </p>
+            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+              <button
+                onClick={() => router.push("/projects")}
+                className="bg-indigo-600 hover:bg-indigo-700 transition text-white px-8 py-3 rounded-md shadow-lg flex items-center justify-center transform hover:scale-105 transition"
+              >
+                See Projects <FiArrowRight className="ml-2" />
+              </button>
+              <button
+                onClick={() => router.push("/developers")}
+                className="border border-indigo-600 text-indigo-600 hover:bg-indigo-50 transition px-8 py-3 rounded-md shadow-lg transform hover:scale-105 transition"
+              >
+                Connect
+              </button>
             </div>
-          </section>
+          </div>
+          {/* Placeholder for Phone Mockup */}
+          <div className="lg:w-1/2 flex justify-center">
+            <Flow />
+          </div>
+        </div>
 
-          <section className="bg-gray-100 py-20">
-            <div className="container mx-auto">
-              <h2 className="text-4xl font-bold text-center">
-                Models can be served in minutes, not months.
-              </h2>
-              <p className="mt-4 text-lg text-center">
-                With Builder, you can go from building and training a model to
-                serving, managing, and monitoring it.
-              </p>
-              <div className="flex mt-10">
-                <div className="w-1/2 p-4">
-                  <h3 className="text-2xl font-bold">
-                    Fast, flexible deployment
-                  </h3>
-                  <p className="mt-2">
-                    Deploy to your infrastructure or ours with the flexibility
-                    to switch environments to suit your business needs.
-                  </p>
-                </div>
-                <div className="w-1/2 p-4">
-                  <h3 className="text-2xl font-bold">Version control</h3>
-                  <p className="mt-2">
-                    Easily rollback changes and rollouts to previous versions.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
+        {/* Bottom Section */}
+        <div className="flex flex-col lg:flex-row justify-between items-center mt-16 space-y-8 lg:space-y-0 lg:space-x-8">
+          <div className="bg-gray-100 rounded-lg shadow-lg p-8 text-center flex-1">
+            <FiUsers className="text-indigo-600 text-4xl mb-4" />
+            <h3 className="text-2xl font-bold mb-2">Connect</h3>
+            <p className="text-gray-600">
+              Join a community of learners and experts. Collaborate on projects
+              and expand your network.
+            </p>
+          </div>
+          <div className="bg-gray-100 rounded-lg shadow-lg p-8 text-center flex-1">
+            <FiBook className="text-indigo-600 text-4xl mb-4" />
+            <h3 className="text-2xl font-bold mb-2">Learn</h3>
+            <p className="text-gray-600">
+              Access cutting-edge courses and gain insights from industry
+              professionals.
+            </p>
+          </div>
+          <div className="bg-gray-100 rounded-lg shadow-lg p-8 text-center flex-1">
+            <FiTrendingUp className="text-indigo-600 text-4xl mb-4" />
+            <h3 className="text-2xl font-bold mb-2">Grow</h3>
+            <p className="text-gray-600">
+              Develop your skills, advance your career, and achieve your goals.
+            </p>
+          </div>
+        </div>
 
-          <section className="bg-white py-20">
-            <div className="container mx-auto">
-              <h2 className="text-4xl font-bold text-center">
-                Include custom business logic
-              </h2>
-              <p className="mt-4 text-lg text-center">
-                Easily sync data sources and assemble business logic around your
-                models.
-              </p>
-              <div className="flex mt-10 justify-center">
-                <div className="w-1/3 p-4">
-                  <h3 className="text-2xl font-bold">REST APIs</h3>
-                  <p className="mt-2">
-                    Connect your model to other services and data stores with a
-                    fully customizable set of API endpoints.
-                  </p>
-                </div>
-                <div className="w-1/3 p-4">
-                  <h3 className="text-2xl font-bold">
-                    Fully customizable environment
-                  </h3>
-                  <p className="mt-2">
-                    Reach users with any type of device or browser with our
-                    built-in API targets database.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
+        {/* Middle Section */}
+        {/* Support Section */}
+        <div className="bg-indigo-50 rounded-lg shadow-lg p-8 mt-16 text-center">
+          <FiHeart className="text-indigo-600 text-4xl mb-4" />
+          <h2 className="text-3xl font-bold mb-4">Support a Solo Developer</h2>
+          <p className="text-lg text-gray-600 mb-8">
+            I'm a solo developer working hard to make professional learning
+            easily accessible to everyone. If you appreciate my work and want to
+            support the project or contribute to its development, please reach
+            out!
+          </p>
+          <button
+            onClick={() => (
+              (window.location.href =
+                "https://mail.google.com/mail/?view=cm&fs=1&to=aditya.kamal004@gmail.com&su=Support%20and%20Contribution&body=Hi%20Aditya%2C%0A%0AI%20would%20like%20to%20contribute%20to%20the%20development%20of%20your%20platform."),
+              "_blank"
+            )}
+            className="bg-indigo-600 hover:bg-indigo-700 transition text-white px-8 py-3 rounded-md shadow-lg transform hover:scale-105 transition"
+          >
+            Contact Me
+          </button>
+        </div>
 
-          <section className="bg-gray-100 py-20">
-            <div className="container mx-auto">
-              <h2 className="text-4xl font-bold text-center">
-                Design powerful front-ends
-              </h2>
-              <p className="mt-4 text-lg text-center">
-                Drag-and-drop components to create a fully-featured UI without
-                learning HTML, CSS, or React.
-              </p>
-              <div className="flex mt-10">
-                <div className="w-1/3 p-4">
-                  <h3 className="text-2xl font-bold">Display</h3>
-                  <p className="mt-2">
-                    Create clear, engaging interfaces for business users with
-                    tables, charts, and more.
-                  </p>
-                </div>
-                <div className="w-1/3 p-4">
-                  <h3 className="text-2xl font-bold">Forms</h3>
-                  <p className="mt-2">
-                    Add interactive forms and trigger actions to start workflows
-                    and integrate with your APIs.
-                  </p>
-                </div>
-                <div className="w-1/3 p-4">
-                  <h3 className="text-2xl font-bold">Charts</h3>
-                  <p className="mt-2">
-                    Build dashboards and self-service tools for end-users by
-                    visualizing data with beautiful, responsive charts.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="bg-white py-20">
-            <div className="container mx-auto text-center">
-              <h2 className="text-4xl font-bold">
-                See why developers love Builder
-              </h2>
-              <div className="mt-10 flex justify-center space-x-4">
-                <div className="w-1/4 p-4 border rounded">
-                  <p className="text-lg">
-                    "Builder allows us to iterate very fast and release features
-                    with confidence, thanks to the powerful custom SaaS
-                    platform."
-                  </p>
-                  <h4 className="mt-4 text-xl font-bold">Emanuel S.</h4>
-                  <p className="text-sm text-gray-500">Data Scientist, CD</p>
-                </div>
-                <div className="w-1/4 p-4 border rounded">
-                  <p className="text-lg">
-                    "The Builder ecosystem, with its APIs, UI components, and
-                    pre-built integrations, enabled us to connect our data
-                    warehouse to operational systems."
-                  </p>
-                  <h4 className="mt-4 text-xl font-bold">Brenda S.</h4>
-                  <p className="text-sm text-gray-500">CTO</p>
-                </div>
-                <div className="w-1/4 p-4 border rounded">
-                  <p className="text-lg">
-                    "Builder provides an easy-to-use interface for my team. Out
-                    of the box, it comes with great integrations and tools for
-                    seamless development."
-                  </p>
-                  <h4 className="mt-4 text-xl font-bold">Jagadish R.</h4>
-                  <p className="text-sm text-gray-500">CEO</p>
-                </div>
-                <div className="w-1/4 p-4 border rounded">
-                  <p className="text-lg">
-                    "Builder gives the speed of local iterations to the testing
-                    and problem-solving."
-                  </p>
-                  <h4 className="mt-4 text-xl font-bold">Fini L.</h4>
-                  <p className="text-sm text-gray-500">Lead Developer</p>
-                </div>
-              </div>
-            </div>
-          </section>
-        </main>
-
-        
-      </div> */}
-      <HeroSection />
-      <VideoComponent />
-      <Features />
+        {/* Footer */}
+        {/* <div className="mt-16 text-center text-gray-600">
+          <p>&copy; 2024 Your Platform. All rights reserved.</p>
+          <div className="flex justify-center space-x-4 mt-4">
+            <p className="text-indigo-600">[Social Media Icons]</p>
+          </div>
+        </div> */}
+      </div>
     </div>
   );
 };
 
-export default index;
+export default LandingPage;

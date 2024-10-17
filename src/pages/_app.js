@@ -1,6 +1,7 @@
 import store from "@/Store/store";
 import RootLayout from "@/components/Layout/RootLayout";
 import "@/styles/globals.css";
+import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 

@@ -17,6 +17,12 @@ const RootLayout = ({ children, router }) => {
     dispatch(loadTokenFromLocalStorage());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (router.asPath === "/") {
+      router.push("/home");
+    }
+  }, []);
+
   return (
     <div style={{ position: "relative" }}>
       {loading && (

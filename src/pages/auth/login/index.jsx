@@ -39,7 +39,7 @@ const index = () => {
           <p className="text-sm text-gray-500">
             Create account to start your experience.
           </p>
-          <button
+          {/* <button
             type="button"
             className="text-white mt-4 bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2"
           >
@@ -57,8 +57,8 @@ const index = () => {
               />
             </svg>
             Sign in with Google
-          </button>
-          <div className="">
+          </button> */}
+          <div className="mt-6">
             <form className="" onSubmit={formik.handleSubmit}>
               <div className="mb-5">
                 <label
@@ -71,7 +71,7 @@ const index = () => {
                   type="email"
                   id="email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="name@uniqq.com"
+                  placeholder="name@dlabss.com"
                   required
                   onChange={formik.handleChange}
                   value={formik.values.email}
@@ -128,12 +128,12 @@ const index = () => {
               className="mt-6 text-sm text-gray-500 dark:text-gray-400"
             >
               New on dlabss?
-              <a
-                href="/auth/signup"
-                className="font-medium ml-2 text-blue-600 hover:underline dark:text-blue-500"
+              <span
+                onClick={() => router.push("/auth/signup")}
+                className="font-medium ml-2 text-blue-600 hover:underline hover:cursor-pointer dark:text-blue-500"
               >
                 Sign up
-              </a>
+              </span>
               .
             </p>
           </div>

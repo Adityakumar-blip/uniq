@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CopyButton from "./Clipboard";
 import { useDispatch, useSelector } from "react-redux";
 import { GetProjectById } from "@/Store/Reducers/ProjectSlice";
@@ -10,10 +10,18 @@ import Image from "next/image";
 const ProjectDescription = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const buttonRef = useRef(null);
   const { id } = router.query;
+  const [isOpen, setIsOpen] = useState(false);
 
   const { projectDetails } = useSelector(({ ProjectSlice }) => ProjectSlice);
   const { token } = useSelector(({ CommonSlice }) => CommonSlice);
+
+  console.log("Project Details", projectDetails);
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
 
   useEffect(() => {
     if (id) {
@@ -38,6 +46,18 @@ const ProjectDescription = () => {
     return formattedDate;
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (buttonRef.current && !buttonRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <div className="flex gap-6 py-16 px-16 h-max  bg-white">
       <div className="w-8/12">
@@ -50,36 +70,37 @@ const ProjectDescription = () => {
               Launched on {formatDate(projectDetails?.createdAt)}
             </p>
           </div>
-          <div className="dropdown dropdown-end">
-            <div
-              tabIndex={0}
-              role="button"
+          <div className="relative">
+            <button
+              onClick={handleToggle}
               className="btn btn-primary text-white m-1"
             >
               Start Contribute
-            </div>
-            <ul
-              tabIndex={0}
-              className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-[500px]"
-            >
-              <div className="p-4">
-                <p className="text-xl font-semibold"> Clone</p>
+            </button>
 
-                <CopyButton url={projectDetails?.githubUrl || ""} />
-                <p className="mt-4 font-semibold">
-                  Clone project using web url
-                </p>
+            {isOpen && (
+              <div
+                ref={buttonRef}
+                className="absolute  right-0 mt-2 z-[1] shadow bg-base-100 rounded-box w-[500px]"
+              >
+                <div className="p-4">
+                  <p className="text-xl font-semibold">Clone</p>
+                  <CopyButton url={projectDetails?.githubUrl || ""} />
+                  <p className="mt-4 font-semibold">
+                    Clone project using web url
+                  </p>
+                </div>
+                <div className="divider">OR</div>
+                <div className="p-4">
+                  <button
+                    onClick={handleConnect}
+                    className="btn btn-primary text-white w-[8rem]"
+                  >
+                    Connect
+                  </button>
+                </div>
               </div>
-              <div className="divider">OR</div>
-              <li className="p-4 ">
-                <button
-                  onClick={() => handleConnect()}
-                  className="btn btn-primary text-white w-[8rem]"
-                >
-                  Connect{" "}
-                </button>
-              </li>
-            </ul>
+            )}
           </div>
         </div>
 

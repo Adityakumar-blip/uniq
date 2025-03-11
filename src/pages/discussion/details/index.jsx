@@ -26,6 +26,7 @@ const DiscussionDetails = ({ discussionProps, commentsProps }) => {
   const { forumId } = router.query;
 
   const { discussion } = useSelector(({ ForumSlice }) => ForumSlice);
+  const { token } = useSelector(({ CommonSlice }) => CommonSlice);
 
   const [comments, setComments] = useState([]);
 
@@ -140,14 +141,21 @@ const DiscussionDetails = ({ discussionProps, commentsProps }) => {
               onChange={(e) => formik.setFieldValue("text", e.target.value)}
               placeholder="Add your views here"
             />
-            <motion.button
-              className="mt-4 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => formik.handleSubmit()}
-            >
-              Post Comment
-            </motion.button>
+            <motion.div className="flex items-center gap-2 ">
+              <motion.button
+                className="mt-4 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => formik.handleSubmit()}
+              >
+                Post Comment
+              </motion.button>
+              {!token && (
+                <p className="text-[#c1121f] text-xs">
+                  Please login, to join the conversation.
+                </p>
+              )}
+            </motion.div>
           </motion.div>
 
           {/* Comments section */}

@@ -1,4 +1,8 @@
 import Flow from "@/components/Design/Flow";
+import { AnimatedGridPattern } from "@/components/magicui/animated-grid-pattern";
+import { WarpBackground } from "@/components/magicui/warp-background";
+import { cn } from "@/lib/utils";
+
 import { useRouter } from "next/router";
 import React from "react";
 import {
@@ -14,9 +18,26 @@ const LandingPage = () => {
   const router = useRouter();
   return (
     <div className="bg-white min-h-screen text-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className=" px-4 sm:px-6 lg:px-8 ">
         {/* Top Section */}
-        <div className="flex flex-col lg:flex-row items-center justify-between">
+        {/* <WarpBackground
+          beamsPerSide={1}
+          beamDelayMax={5}
+          beamDelayMin={4}
+          beamDuration={200}
+          perspective={100}
+        > */}
+        <div className="relative flex h-[500px] w-full items-center overflow-hidden rounded-lg border bg-background p-20">
+          <AnimatedGridPattern
+            numSquares={100}
+            maxOpacity={0.1}
+            duration={3}
+            repeatDelay={1}
+            className={cn(
+              "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
+              "inset-x-0 inset-y-[-30%] h-[200%] skew-y-12"
+            )}
+          />
           <div className="lg:w-1/2 mb-12 lg:mb-0">
             <h1 className="text-5xl lg:text-6xl font-extrabold mb-6 leading-tight text-gray-900">
               Fresh Ideas, Seasoned Expertise, One Platform
@@ -26,29 +47,30 @@ const LandingPage = () => {
               projects together, learn from experienced professionals, and grow
               on a platform that brings everyone together.
             </p>
-            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+            <div className="flex items-center  sm:flex-row w-full space-y-4 sm:space-y-0 sm:space-x-4">
               <button
                 onClick={() => router.push("/projects")}
-                className="bg-indigo-600 hover:bg-indigo-700 transition text-white px-8 py-3 rounded-md shadow-lg flex items-center justify-center transform hover:scale-105 transition"
+                className="bg-indigo-600 hover:bg-indigo-700 transition text-white px-8 py-3 rounded-md shadow-lg flex items-center justify-center transform hover:scale-105 "
               >
                 See Projects <FiArrowRight className="ml-2" />
               </button>
               <button
                 onClick={() => router.push("/developers")}
-                className="border border-indigo-600 text-indigo-600 hover:bg-indigo-50 transition px-8 py-3 rounded-md shadow-lg transform hover:scale-105 transition"
+                className="border border-indigo-600 text-indigo-600 hover:bg-indigo-50  px-8 py-3 rounded-md shadow-lg transform hover:scale-105 transition"
               >
                 Connect
               </button>
             </div>
           </div>
           {/* Placeholder for Phone Mockup */}
-          <div className="lg:w-1/2 flex justify-center">
+          {/* <div className="lg:w-1/2 flex justify-center">
             <Flow />
-          </div>
+          </div> */}
         </div>
+        {/* </WarpBackground> */}
 
         {/* Bottom Section */}
-        <div className="flex flex-col lg:flex-row justify-between items-center mt-16 space-y-8 lg:space-y-0 lg:space-x-8">
+        <div className="flex max-w-7xl mx-auto flex-col lg:flex-row justify-between items-center mt-16 space-y-8 lg:space-y-0 lg:space-x-8">
           <div className="bg-gray-100 rounded-lg shadow-lg p-8 text-center flex-1">
             <FiUsers className="text-indigo-600 text-4xl mb-4" />
             <h3 className="text-2xl font-bold mb-2">Connect</h3>

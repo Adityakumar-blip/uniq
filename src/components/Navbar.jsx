@@ -88,6 +88,31 @@ const Navbar = () => {
         {/* Desktop menu */}
         <div className="hidden md:block md:w-auto" id="navbar-dropdown">
           <ul className="flex items-center flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
+            <li onClick={() => NavigateToRoute("/")}>
+              <div className="relative">
+                <a
+                  className={`block py-2 px-3 ${
+                    path === "/mock-interview"
+                      ? "text-primary"
+                      : "text-gray-900"
+                  } rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 hover:cursor-pointer`}
+                >
+                  Mock Interviews
+                </a>
+                <span className="absolute -top-2 -right-2 bg-primary text-[0.5rem] text-white px-1 rounded-full">
+                  Coming Soon
+                </span>
+              </div>
+            </li>
+            <li onClick={() => NavigateToRoute("/qna")}>
+              <a
+                className={`block py-2 px-3 ${
+                  path.includes("/qna") ? "text-primary" : "text-gray-900"
+                } rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 hover:cursor-pointer`}
+              >
+                QNA
+              </a>
+            </li>
             <li onClick={() => NavigateToRoute("/projects")}>
               <a
                 className={`block py-2 px-3 ${

@@ -11,6 +11,9 @@ const nextConfig = {
   publicRuntimeConfig: {
     version: "1.0.0",
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;

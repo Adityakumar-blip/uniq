@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   token: null,
   loading: false,
+  showLogin: false,
   user: {},
 };
 
@@ -28,11 +29,20 @@ const CommonSlice = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
+    setLogin: (state, action) => {
+      state.showLogin = action.payload;
+    },
   },
 });
 
-export const { setToken, clearToken, setLoading, setUser, clearUser } =
-  CommonSlice.actions;
+export const {
+  setToken,
+  clearToken,
+  setLoading,
+  setUser,
+  clearUser,
+  setLogin,
+} = CommonSlice.actions;
 
 export const loadTokenFromLocalStorage = () => (dispatch) => {
   const token = localStorage.getItem("token");

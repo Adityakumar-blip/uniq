@@ -30,7 +30,7 @@ const AnimatedTransition = ({ children }) => {
   }, [location.asPath]);
 
   return (
-    <div ref={containerRef} className="transition-opacity duration-500">
+    <div ref={containerRef} className="transition-opacity duration-500 h-full">
       {children}
     </div>
   );

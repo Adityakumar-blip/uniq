@@ -8,7 +8,7 @@ const TechCard = ({ technology, index }) => {
   const handleTechClick = () => {
     router.push({
       pathname: "/qna/technology",
-      query: { techId: technology?.id },
+      query: { techId: technology?._id },
     });
   };
   return (
@@ -18,10 +18,10 @@ const TechCard = ({ technology, index }) => {
     >
       <div className="flex items-start gap-4">
         <div
-          className="w-14 h-14 flex items-center justify-center rounded-xl mb-2 text-2xl flex-shrink-0"
-          style={{ backgroundColor: `${technology.color}20` }}
+          className="w-14 h-14 flex items-center text-black justify-center rounded-xl mb-2 text-2xl flex-shrink-0"
+          style={{ backgroundColor: `#3776AB20` }}
         >
-          {technology.icon}
+          {technology.name[0]}
         </div>
 
         <div className="flex-1">
@@ -36,7 +36,7 @@ const TechCard = ({ technology, index }) => {
 
       <div className="mt-auto pt-4 flex justify-between items-center">
         <span
-          className="text-xs font-medium px-3 py-1.5 rounded-full inline-block"
+          className="text-xs text-black font-medium px-3 py-1.5 rounded-full inline-block"
           style={{
             backgroundColor: `${technology.color}20`,
             color: `${technology.color}`,

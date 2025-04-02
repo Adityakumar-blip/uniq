@@ -36,7 +36,7 @@ const QuestionItem = ({ question, index }) => {
   const handleQuestionClick = () => {
     router.push({
       pathname: "/qna/technology/question",
-      query: { questionId: question.id },
+      query: { questionId: question._id },
     });
   };
 
@@ -66,10 +66,10 @@ const QuestionItem = ({ question, index }) => {
               )}
             >
               {getQuestionTypeIcon(question.type)}
-              {question.type === "theoretical" ? "Theory" : "Practical"}
+              {question.type === "Theoretical" ? "Theory" : "Practical"}
             </span>
             <h3 className="font-medium text-black text-lg line-clamp-2">
-              {question.title}
+              {question.question}
             </h3>
           </div>
 

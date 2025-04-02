@@ -3,13 +3,21 @@ import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { technologies } from "../../data/mockdata";
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCategories } from "@/Store/Reducers/QuestionSlice";
 
 const SidebarLayout = ({ children }) => {
   const router = useRouter();
+  const { techId } = router.query;
+  const dispatch = useDispatch();
   const [collapsed, setCollapsed] = useState(false);
   const [search, setSearch] = useState("");
   const location = useRouter();
+
   const [isMobile, setIsMobile] = useState(false);
+
+  const { allCategories } = useSelector(({ QuestionSlice }) => QuestionSlice);
+
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
 
@@ -23,7 +31,7 @@ const SidebarLayout = ({ children }) => {
   }, []);
 
   // Filter technologies based on search
-  const filteredTechnologies = technologies.filter((tech) =>
+  const filteredTechnologies = allCategories?.filter((tech) =>
     tech.name.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -39,6 +47,11 @@ const SidebarLayout = ({ children }) => {
     handleResize();
 
     return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // api calls
+  useEffect(() => {
+    dispatch(getAllCategories());
   }, []);
 
   return (
@@ -91,13 +104,13 @@ const SidebarLayout = ({ children }) => {
               onClick={() => {
                 router.push({
                   pathname: "/qna/technology",
-                  query: { techId: tech?.id },
+                  query: { techId: tech?._id },
                 });
               }}
               className={cn(
                 "flex items-center gap-3 px-4 py-3 my-0.5 mx-1 hover:cursor-pointer rounded-lg transition-colors",
-                location.asPath === `/technology/${tech.id}`
-                  ? "bg-primary/10 font-medium"
+                tech?._id === techId
+                  ? "bg-[#e1e5f2] font-medium"
                   : "hover:bg-secondary",
                 collapsed && "justify-center"
               )}
@@ -109,7 +122,7 @@ const SidebarLayout = ({ children }) => {
                 )}
                 style={{ backgroundColor: `${tech.color}20` }}
               >
-                {tech.icon}
+                {tech.name[0]}
               </div>
               {!collapsed && (
                 <div className="flex-1">

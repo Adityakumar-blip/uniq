@@ -5,19 +5,29 @@ import AnimatedTransition from "@/components/AnimatedTransition";
 import Navbar from "@/components/Navbar";
 import { useRouter } from "next/router";
 import { questions, technologies } from "../../data/mockdata";
+import { useDispatch, useSelector } from "react-redux";
+import { getQuestionById } from "@/Store/Reducers/QuestionSlice";
+import LoginModal from "./LoginModal";
+import { setLogin } from "@/Store/Reducers/CommonSlice";
 
 const Question = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { questionId } = router.query;
   const [showAnswer, setShowAnswer] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const { token, user } = useSelector(({ CommonSlice }) => CommonSlice);
 
+  const { question, allCategories } = useSelector(
+    ({ QuestionSlice }) => QuestionSlice
+  );
   // Find the selected question
-  const question = questions.find((q) => q.id === questionId);
+  // const question = questions.find((q) => q.id === questionId);
 
   // Find the related technology
   const technology = question
-    ? technologies.find((tech) => tech.id === question.technologyId)
+    ? allCategories.find((tech) => tech._id === question?.category?._id)
     : null;
 
   // Related questions (same technology, excluding current)
@@ -30,10 +40,36 @@ const Question = () => {
         .slice(0, 3)
     : [];
 
+  const handleRevealAnswer = () => {
+    if (token) {
+      setShowAnswer(true);
+    } else {
+      dispatch(setLogin(true));
+    }
+  };
+
+  const handleLoginSuccess = () => {
+    setShowLoginModal(false);
+    setShowAnswer(true);
+  };
+
   // Copy answer to clipboard
   const copyToClipboard = () => {
-    if (question) {
-      navigator.clipboard.writeText(question.answer);
+    if (question && question.answers && question.answers.length > 0) {
+      const answer = question.answers[0];
+      let textToCopy = answer.text || "";
+
+      if (answer.codeSnippet) {
+        textToCopy += "\n\nCode Example:\n" + answer.codeSnippet;
+      }
+
+      if (answer.references && answer.references.length > 0) {
+        textToCopy +=
+          "\n\nReferences:\n" +
+          answer.references.map((ref) => ref.source).join("\n");
+      }
+
+      navigator.clipboard.writeText(textToCopy);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
@@ -45,11 +81,17 @@ const Question = () => {
     setShowAnswer(false);
   }, [questionId]);
 
-  if (!question || !technology) {
+  useEffect(() => {
+    dispatch(getQuestionById(questionId));
+  }, [questionId]);
+
+  if (!question) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-medium mb-4">Question not found</h1>
+          <h1 className="text-2xl font-medium mb-4 text-black">
+            Question not found
+          </h1>
           <a
             href="/"
             className="inline-flex items-center text-primary hover:underline"
@@ -99,19 +141,19 @@ const Question = () => {
               className="inline-flex hover:cursor-pointer items-center text-muted-foreground hover:text-foreground transition-colors mb-6"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to {technology.name} questions
+              Back to {technology?.name} questions
             </p>
 
             <div className="flex flex-wrap gap-3 items-center mb-6">
               <a
-                href={`/technology/${technology.id}`}
+                href={`/technology/${technology?.id}`}
                 className="text-sm px-3 py-1 rounded-full transition-colors hover:opacity-80"
                 style={{
-                  backgroundColor: `${technology.color}20`,
-                  color: `${technology.color}`,
+                  backgroundColor: `${technology?.color}20`,
+                  color: `${technology?.color}`,
                 }}
               >
-                {technology.name}
+                {technology?.name}
               </a>
 
               <span
@@ -132,21 +174,14 @@ const Question = () => {
             </div>
 
             <h1 className="text-2xl md:text-3xl text-black font-medium mb-4">
-              {question.title}
+              {question.question}
             </h1>
 
             <p className="text-muted-foreground">{question.description}</p>
           </div>
 
           <div className="mt-10">
-            {!showAnswer ? (
-              <button
-                onClick={() => setShowAnswer(true)}
-                className="w-full py-4 border-2 border-dashed border-primary/30 rounded-lg text-primary hover:bg-primary/5 transition-colors"
-              >
-                Reveal Answer
-              </button>
-            ) : (
+            {showAnswer ? (
               <div className="animate-fade-in">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="font-medium">Answer</h3>
@@ -168,9 +203,63 @@ const Question = () => {
                   </button>
                 </div>
                 <div className="bg-secondary/50 p-4 md:p-6 rounded-lg text-foreground/90 leading-relaxed">
-                  {question.answer}
+                  {/* Main answer text */}
+                  {question.answers && question.answers.length > 0 && (
+                    <div className="space-y-6">
+                      <p>{question.answers[0].text}</p>
+
+                      {/* Code snippet section */}
+                      {question.answers[0].codeSnippet && (
+                        <div className="mt-4">
+                          <h4 className="text-sm font-medium mb-2">
+                            Code Example:
+                          </h4>
+                          <pre className="bg-gray-800 text-gray-100 p-3 rounded-md overflow-x-auto">
+                            <code>{question.answers[0].codeSnippet}</code>
+                          </pre>
+                        </div>
+                      )}
+
+                      {/* References section */}
+                      {question.answers[0].references &&
+                        question.answers[0].references.length > 0 && (
+                          <div className="mt-4 border-t border-gray-200 pt-4">
+                            <h4 className="text-sm font-medium mb-2">
+                              References:
+                            </h4>
+                            <ul className="space-y-1">
+                              {question.answers[0].references.map(
+                                (ref, index) => (
+                                  <li
+                                    key={ref._id}
+                                    className="flex items-center gap-1.5"
+                                  >
+                                    <ExternalLink className="h-3.5 w-3.5 text-primary flex-shrink-0" />
+                                    <a
+                                      href={ref.source}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-sm text-primary hover:underline truncate"
+                                    >
+                                      {ref.source}
+                                    </a>
+                                  </li>
+                                )
+                              )}
+                            </ul>
+                          </div>
+                        )}
+                    </div>
+                  )}
                 </div>
               </div>
+            ) : (
+              <button
+                onClick={() => handleRevealAnswer()}
+                className="w-full py-4 border-2 border-dashed border-primary/30 rounded-lg text-primary hover:bg-primary/5 transition-colors"
+              >
+                Reveal Answer
+              </button>
             )}
           </div>
 

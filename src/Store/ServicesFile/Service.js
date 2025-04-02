@@ -45,3 +45,11 @@ export const GetForumByAuthorAPI = (data) =>
   GET(`${BASE_URL}forum/getDiscussionByAuthor?authorId=${data}`);
 export const GetDiscussionByCategoryAPI = (data) =>
   GET(`${BASE_URL}forum/getDiscussionByCategory?categoryId=${data}`);
+
+// ** Question APIs
+export const GetAllCategoriesAPI = (data) =>
+  GET(`${BASE_URL}questionCategory/getAllCategories`, data);
+export const GetAllQuestionsByCategoryAPI = (data) =>
+  GET(`${BASE_URL}question/getQuestionByCategory?id=${data}`);
+export const getQuestionByIdAPI = (data) =>
+  GET(`${BASE_URL}question/getQuestionById?id=${data}`);

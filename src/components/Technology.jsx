@@ -5,37 +5,44 @@ import AnimatedTransition from "./AnimatedTransition";
 import { Tabs, TabsList, TabsTrigger } from "./Design/Tabs";
 import { useRouter } from "next/router";
 import { questions, technologies } from "../../data/mockdata";
+import { useDispatch, useSelector } from "react-redux";
+import { getQuestionsByCategory } from "@/Store/Reducers/QuestionSlice";
 
 const Technology = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { techId } = router.query;
   const [activeTab, setActiveTab] = useState("all");
 
+  const { allCategories, allQuestions } = useSelector(
+    ({ QuestionSlice }) => QuestionSlice
+  );
+
   // Find the selected technology
-  const technology = technologies.find((tech) => tech.id === techId);
+  const technology = allCategories.find((tech) => tech._id === techId);
 
   // Filter questions for this technology
   const techQuestions = questions.filter((q) => q.technologyId === techId);
 
   // Sort questions by frequency (most frequently asked first)
-  const sortedQuestions = [...techQuestions].sort(
-    (a, b) => b.frequency - a.frequency
-  );
+  const sortedQuestions =
+    allQuestions.length > 0 &&
+    [...allQuestions].sort((a, b) => b.frequency - a.frequency);
 
   // Categorize questions by type
-  const theoreticalQuestions = sortedQuestions.filter(
-    (q) => q.type === "theoretical"
-  );
-  const practicalQuestions = sortedQuestions.filter(
-    (q) => q.type === "practical"
-  );
+  const theoreticalQuestions =
+    sortedQuestions.length > 0 &&
+    sortedQuestions?.filter((q) => q.type === "Theoretical");
+  const practicalQuestions =
+    sortedQuestions.length > 0 &&
+    sortedQuestions?.filter((q) => q.type === "Practical");
 
   // Determine which questions to show based on the active tab
   const questionsToShow = () => {
     switch (activeTab) {
-      case "theoretical":
+      case "Theoretical":
         return theoreticalQuestions;
-      case "practical":
+      case "Practical":
         return practicalQuestions;
       default:
         return sortedQuestions;
@@ -46,6 +53,10 @@ const Technology = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     setActiveTab("all"); // Reset to "all" tab when changing technology
+  }, [techId]);
+
+  useEffect(() => {
+    dispatch(getQuestionsByCategory(techId));
   }, [techId]);
 
   if (!technology) {
@@ -72,10 +83,10 @@ const Technology = () => {
         <div className="mb-8 bg-card rounded-xl p-6 shadow-sm border">
           <div className="flex text-black items-center gap-4 mb-4">
             <div
-              className="w-16 h-16 flex items-center justify-center rounded-full text-2xl"
+              className="w-16 h-16 flex font-semibold items-center justify-center rounded-full text-2xl"
               style={{ backgroundColor: `${technology.color}20` }}
             >
-              {technology.icon}
+              {technology.name[0]}
             </div>
             <div>
               <h1 className="text-3xl text-black font-medium">
@@ -120,12 +131,17 @@ const Technology = () => {
         </Tabs>
 
         <div className="space-y-3">
-          {questionsToShow().map((question, index) => (
-            <QuestionItem key={question.id} question={question} index={index} />
-          ))}
+          {questionsToShow().length > 0 &&
+            questionsToShow()?.map((question, index) => (
+              <QuestionItem
+                key={question._id}
+                question={question}
+                index={index}
+              />
+            ))}
         </div>
 
-        {questionsToShow().length === 0 && (
+        {questionsToShow()?.length === 0 && (
           <div className="text-center py-16 bg-muted/30 rounded-xl">
             <p className="text-muted-foreground">
               No questions found for this type.

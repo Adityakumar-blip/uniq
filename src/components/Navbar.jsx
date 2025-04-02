@@ -61,7 +61,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white border-gray-200">
+    <nav className="bg-white border-gray-200 border-b">
       <div className="w-full-xl px-10 flex flex-wrap items-center justify-between mx-auto p-4">
         <Link
           href="/projects"
@@ -133,14 +133,16 @@ const Navbar = () => {
             </li>
             {token ? (
               <>
-                <li>
-                  <button
-                    className="btn btn-primary text-white"
-                    onClick={() => router.push("/add-project")}
-                  >
-                    Submit Project
-                  </button>
-                </li>
+                {user.isAdmin && (
+                  <li>
+                    <button
+                      className="btn btn-primary text-white"
+                      onClick={() => router.push("/add-project")}
+                    >
+                      Submit Project
+                    </button>
+                  </li>
+                )}
                 <li>
                   <div className="dropdown dropdown-hover dropdown-end">
                     <div

@@ -1,9 +1,17 @@
 import AnimatedTransition from "@/components/AnimatedTransition";
 import TechCard from "@/components/TechCard";
-import React from "react";
+import React, { useEffect } from "react";
 import { technologies } from "../../../data/mockdata";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCategories } from "@/Store/Reducers/QuestionSlice";
 
 const Front = () => {
+  const dispatch = useDispatch();
+  const { allCategories } = useSelector(({ QuestionSlice }) => QuestionSlice);
+
+  useEffect(() => {
+    dispatch(getAllCategories());
+  }, []);
   return (
     <AnimatedTransition>
       <div className="max-w-7xl mx-auto px-4 pt-8 pb-24">
@@ -23,9 +31,9 @@ const Front = () => {
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {technologies.map((technology, index) => (
+            {allCategories.map((technology, index) => (
               <TechCard
-                key={technology.id}
+                key={technology._id}
                 technology={technology}
                 index={index}
               />

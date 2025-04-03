@@ -22,7 +22,7 @@ const MetricsBentoGrid = () => {
           </div>
 
           <div className="mt-6">
-            <button className="px-5 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+            <button className="px-5 py-2 bg-primary text-white rounded-lg hover:bg-indigo-500 transition-colors">
               Browse Questions
             </button>
           </div>

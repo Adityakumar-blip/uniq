@@ -18,13 +18,17 @@ import qna from "@/assets/qna.png";
 import FeatureComponent from "@/components/Design/Features";
 import Testimonial from "@/components/Design/Testimonial";
 import MetricsBentoGrid from "@/components/Design/Metrics";
+import PricingSection from "@/components/Design/Pricing";
+import FAQSection from "@/components/Design/FAQSection";
+import Footer from "@/components/Design/Footer";
+import CTA from "@/components/Design/CTA";
 
 const LandingPage = () => {
   const router = useRouter();
   return (
     <div className="bg-white min-h-screen text-gray-800">
-      <div className=" px-4 sm:px-6 lg:px-8 mt-8 ">
-        <div className="relative flex h-[500px] w-full items-center justify-center overflow-hidden rounded-lg  bg-background p-20">
+      <div className=" mt-8 ">
+        <div className="relative  px-4 sm:px-6 lg:px-8 flex h-[500px] w-full items-center justify-center overflow-hidden rounded-lg  bg-background p-20">
           <AnimatedGridPattern
             numSquares={100}
             maxOpacity={0.1}
@@ -60,20 +64,34 @@ const LandingPage = () => {
             </div>
           </div>
         </div>
-        <div className="relative mt-10">
+        <div className="relative mt-10  px-4 sm:px-6 lg:px-8">
           <Safari url="dlabss.com" className="size-full" imageSrc={qna.src} />
         </div>
 
-        <div>
+        <div className=" px-4 sm:px-6 lg:px-8">
           <FeatureComponent />
         </div>
 
-        <div>
+        <div className=" px-4 sm:px-6 lg:px-8">
           <Testimonial />
         </div>
 
-        <div>
+        <div className=" px-4 sm:px-6 lg:px-8">
           <MetricsBentoGrid />
+        </div>
+
+        <div>
+          <PricingSection />
+        </div>
+
+        <div>
+          <FAQSection />
+        </div>
+
+        <CTA />
+
+        <div>
+          <Footer />
         </div>
       </div>
     </div>

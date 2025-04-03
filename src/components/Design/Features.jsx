@@ -60,17 +60,13 @@ const FeatureComponent = () => {
           {features.map((feature, index) => (
             <div
               key={feature.id}
-              className={`flex items-start p-6 rounded-xl cursor-pointer transition-all duration-300 ${
-                activeFeature === index
-                  ? "bg-gray-50 shadow-sm"
-                  : "hover:bg-gray-50/50"
-              }`}
+              className={`flex items-start p-6 rounded-xl cursor-pointer transition-all duration-300 `}
               onClick={() => setActiveFeature(index)}
             >
               <div className="flex flex-col w-full">
                 <div className="flex items-center gap-4">
                   <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    className={`w-5 h-5 rounded-full flex items-center justify-center ${
                       activeFeature === index
                         ? "bg-primary text-white"
                         : "bg-gray-100 text-gray-500"
@@ -90,7 +86,7 @@ const FeatureComponent = () => {
                 <AnimatePresence mode="wait">
                   {activeFeature === index && (
                     <motion.div
-                      className="ml-14 mt-3"
+                      className="ml-9 mt-3"
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}

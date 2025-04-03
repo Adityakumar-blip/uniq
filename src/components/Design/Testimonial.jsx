@@ -15,30 +15,6 @@ const Testimonial = () => {
           </p>
         </div>
 
-        {/* Metrics Row */}
-        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-          {[
-            { value: "100,000+", label: "Questions Practiced" },
-            { value: "50,000+", label: "Mock Interviews Completed" },
-            { value: "5,000+", label: "Successful Job Placements" },
-          ].map((metric, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-2xl shadow-md p-8 text-center transform transition duration-300 hover:-translate-y-1 hover:shadow-lg"
-            >
-              <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
-                <span className="text-primary text-2xl">
-                  {index === 0 ? "✓" : index === 1 ? "👥" : "🚀"}
-                </span>
-              </div>
-              <h3 className="text-4xl font-bold text-primary mb-2">
-                {metric.value}
-              </h3>
-              <p className="text-gray-600">{metric.label}</p>
-            </div>
-          ))}
-        </div> */}
-
         {/* Testimonials Carousel */}
         <div className="relative">
           {/* Carousel Navigation */}
@@ -154,7 +130,7 @@ const Testimonial = () => {
 
         {/* View More Button */}
         <div className="text-center mt-12">
-          <button className="px-8 py-3 bg-primary hover:bg-primary/90 text-white rounded-full font-medium transition-colors shadow-md hover:shadow-lg flex items-center mx-auto">
+          <button className="px-8 py-3 bg-primary  text-white rounded-full font-medium transition-colors shadow-md hover:shadow-lg hover:bg-indigo-500 flex items-center mx-auto">
             Read More Success Stories
             <svg
               className="w-4 h-4 ml-2"
